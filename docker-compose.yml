@@ -1,0 +1,40 @@
+version: '3.8'
+
+networks:
+  rede_trabalho:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 43.79.0.0/16
+
+services:
+  servidor-sequencial:
+    build: .
+    container_name: servidor-sequencial
+    command: python servidor_sequencial.py
+    ports:
+      - "8080:80"
+    networks:
+      rede_trabalho:
+        ipv4_address: 43.79.0.10
+
+  servidor-concorrente:
+    build: .
+    container_name: servidor-concorrente
+    command: python servidor_concorrente.py
+    ports:
+      - "8081:80"
+    networks:
+      rede_trabalho:
+        ipv4_address: 43.79.0.11
+
+  cliente-teste:
+    build: .
+    container_name: cliente-teste
+    command: tail -f /dev/null
+    networks:
+      rede_trabalho:
+        ipv4_address: 43.79.0.100
+    depends_on:
+      - servidor-sequencial
+      - servidor-concorrente
