@@ -13,7 +13,7 @@ services:
     container_name: servidor-sequencial
     command: python servidor_sequencial.py
     ports:
-      - "8080:80"
+      - "8080:80"  # CORRIGIDO: 8080 externo → 80 interno
     networks:
       rede_trabalho:
         ipv4_address: 43.79.0.10
@@ -23,7 +23,7 @@ services:
     container_name: servidor-concorrente
     command: python servidor_concorrente.py
     ports:
-      - "8081:80"
+      - "8081:80"  # CORRIGIDO: 8081 externo → 80 interno
     networks:
       rede_trabalho:
         ipv4_address: 43.79.0.11
@@ -31,7 +31,7 @@ services:
   cliente-teste:
     build: .
     container_name: cliente-teste
-    command: tail -f /dev/null
+    command: python test_metricas.py
     networks:
       rede_trabalho:
         ipv4_address: 43.79.0.100
