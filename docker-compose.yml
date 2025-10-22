@@ -1,40 +1,50 @@
-version: '3.8'
+version: "3.9"
+
+services:
+  servidor-sequencial:
+    build: .
+    container_name: servidor-sequencial
+    command: python3 servidorSequencial.py
+    networks:
+      rede_trabalho:
+        ipv4_address: 37.92.0.10
+
+  servidor-concorrente:
+    build: .
+    container_name: servidor-concorrente
+    command: python3 servidorConcorrente.py
+    networks:
+      rede_trabalho:
+        ipv4_address: 37.92.0.11
+
+  cliente-teste:
+    build: .
+    container_name: cliente-teste
+    command: python3 clienteTestes.py
+    networks:
+      rede_trabalho:
+        ipv4_address: 37.92.0.100
+    depends_on:
+      - servidor-sequencial
+      - servidor-concorrente
+    volumes:
+      - ./resultados:/app/resultados
+
+  analisador-metricas:
+    build: .
+    container_name: analisador-metricas
+    command: python3 analisadorMetricas.py
+    networks:
+      rede_trabalho:
+        ipv4_address: 37.92.0.200
+    volumes:
+      - ./resultados:/app/resultados
+    depends_on:
+      - cliente-teste
 
 networks:
   rede_trabalho:
     driver: bridge
     ipam:
       config:
-        - subnet: 43.79.0.0/16
-
-services:
-  servidor-sequencial:
-    build: .
-    container_name: servidor-sequencial
-    command: python servidor_sequencial.py
-    ports:
-      - "8080:80"  # CORRIGIDO: 8080 externo → 80 interno
-    networks:
-      rede_trabalho:
-        ipv4_address: 43.79.0.10
-
-  servidor-concorrente:
-    build: .
-    container_name: servidor-concorrente
-    command: python servidor_concorrente.py
-    ports:
-      - "8081:80"  # CORRIGIDO: 8081 externo → 80 interno
-    networks:
-      rede_trabalho:
-        ipv4_address: 43.79.0.11
-
-  cliente-teste:
-    build: .
-    container_name: cliente-teste
-    command: python test_metricas.py
-    networks:
-      rede_trabalho:
-        ipv4_address: 43.79.0.100
-    depends_on:
-      - servidor-sequencial
-      - servidor-concorrente
+        - subnet: 37.92.0.0/16
