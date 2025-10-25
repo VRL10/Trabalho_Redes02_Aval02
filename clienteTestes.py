@@ -8,13 +8,13 @@ from datetime import datetime
 
 class ClienteTestes:
     def __init__(self):
-        self.idCustom = hashlib.md5("20229043792 Victor Rodrigues Luz".encode()).hexdigest()
+        self.id_personalizado = hashlib.md5("20229043792 Victor Rodrigues Luz".encode()).hexdigest()
     
-    def criarRequisicaoHTTP(self, metodo="GET", caminho="/", corpo=""):
+    def criar_requisicao_http(self, metodo="GET", caminho="/", corpo=""):
         if metodo == "GET":
             requisicao = f"""GET {caminho} HTTP/1.1\r
 Host: 37.92.0.10\r
-X-Custom-ID: {self.idCustom}\r
+X-Custom-ID: {self.id_personalizado}\r
 User-Agent: Cliente-Teste-Sockets/Redes-II\r
 Connection: close\r
 \r
@@ -22,7 +22,7 @@ Connection: close\r
         else:
             requisicao = f"""POST {caminho} HTTP/1.1\r
 Host: 37.92.0.10\r
-X-Custom-ID: {self.idCustom}\r
+X-Custom-ID: {self.id_personalizado}\r
 User-Agent: Cliente-Teste-Sockets/Redes-II\r
 Content-Type: application/x-www-form-urlencoded\r
 Content-Length: {len(corpo)}\r
@@ -32,14 +32,14 @@ Connection: close\r
         
         return requisicao
     
-    def medirRequisicao(self, ip, porta, metodo, caminho, corpo=""):
+    def medir_requisicao(self, ip, porta, metodo, caminho, corpo=""):
         inicio = time.time()
         try:
             s = socket.socket()
             s.settimeout(10)
             s.connect((ip, porta))
             
-            requisicao = self.criarRequisicaoHTTP(metodo, caminho, corpo)
+            requisicao = self.criar_requisicao_http(metodo, caminho, corpo)
             s.send(requisicao.encode())
             
             resposta = b""
@@ -61,7 +61,7 @@ Connection: close\r
         except Exception as e:
             return time.time() - inicio, 0, False
     
-    def executarTesteSequencial(self, ip, porta, metodo, num_requisicoes=25):
+    def executar_teste_sequencial(self, ip, porta, metodo, num_requisicoes=25):
         print(f"Teste SEQUENCIAL {metodo}: {ip}:{porta} - {num_requisicoes} requisições")
         
         tempos = []
@@ -76,7 +76,7 @@ Connection: close\r
                 caminho = "/api/data"
                 corpo = f"dados=teste_{i}_valor_{i*2}"
             
-            tempo, status, sucesso = self.medirRequisicao(ip, porta, metodo, caminho, corpo)
+            tempo, status, sucesso = self.medir_requisicao(ip, porta, metodo, caminho, corpo)
             
             tempos.append(tempo)
             if sucesso:
@@ -102,7 +102,7 @@ Connection: close\r
             'throughput': num_requisicoes / tempo_total
         }
     
-    def executarTesteConcorrente(self, ip, porta, metodo, num_threads=5, requisicoes_por_thread=10):
+    def executar_teste_concorrente(self, ip, porta, metodo, num_threads=5, requisicoes_por_thread=10):
         print(f"Teste CONCORRENTE {metodo}: {ip}:{porta} - {num_threads} threads × {requisicoes_por_thread} reqs")
         
         resultados = {
@@ -111,7 +111,7 @@ Connection: close\r
             'lock': threading.Lock()
         }
         
-        def worker_thread(thread_id):
+        def thread_trabalhadora(id_thread):
             for i in range(requisicoes_por_thread):
                 if metodo == "GET":
                     if i % 4 == 0:
@@ -129,12 +129,12 @@ Connection: close\r
                         corpo = f"item_{i},item_{i+1},item_{i+2}"
                     elif i % 2 == 0:
                         caminho = "/api/echo"
-                        corpo = f"dados_thread_{thread_id}_req_{i}"
+                        corpo = f"dados_thread_{id_thread}_req_{i}"
                     else:
                         caminho = "/api/data"
-                        corpo = f"dados=thread_{thread_id}_req_{i}"
+                        corpo = f"dados=thread_{id_thread}_req_{i}"
                 
-                tempo, status, sucesso = self.medirRequisicao(ip, porta, metodo, caminho, corpo)
+                tempo, status, sucesso = self.medir_requisicao(ip, porta, metodo, caminho, corpo)
                 
                 with resultados['lock']:
                     resultados['tempos'].append(tempo)
@@ -145,7 +145,7 @@ Connection: close\r
         inicio_teste = time.time()
         
         for i in range(num_threads):
-            thread = threading.Thread(target=worker_thread, args=(i + 1,))
+            thread = threading.Thread(target=thread_trabalhadora, args=(i + 1,))
             threads.append(thread)
             thread.start()
         
@@ -172,13 +172,13 @@ Connection: close\r
             'throughput': total_requisicoes / tempo_total
         }
     
-    def executarSuiteCompleta(self, num_execucoes=10):
+    def executar_suite_completa(self, num_execucoes=10):
         print("=" * 70)
         print("SUITE COMPLETA DE TESTES - SOCKETS BRUTOS")
         print("=" * 70)
         print(f"Início: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
         print(f"Execuções por teste: {num_execucoes}")
-        print(f"X-Custom-ID: {self.idCustom}")
+        print(f"X-Custom-ID: {self.id_personalizado}")
         print("Servidor Sequencial: 37.92.0.10:80")
         print("Servidor Concorrente: 37.92.0.11:80")
         print("=" * 70)
@@ -189,7 +189,7 @@ Connection: close\r
                 'nome': 'Victor Rodrigues Luz',
                 'data_testes': datetime.now().isoformat(),
                 'num_execucoes': num_execucoes,
-                'custom_id': self.idCustom,
+                'custom_id': self.id_personalizado,
                 'subrede': '37.92.0.0/16',
                 'protocolo': 'TCP/Sockets-Brutos',
                 'metricas_coletadas': [
@@ -222,22 +222,22 @@ Connection: close\r
             print(f"\nExecução {i+1}/{num_execucoes}")
             
             resultados['servidor_sequencial']['testes_get_sequenciais'].append(
-                self.executarTesteSequencial('37.92.0.10', 80, 'GET', 25)
+                self.executar_teste_sequencial('37.92.0.10', 80, 'GET', 25)
             )
             time.sleep(1)
             
             resultados['servidor_sequencial']['testes_post_sequenciais'].append(
-                self.executarTesteSequencial('37.92.0.10', 80, 'POST', 25)
+                self.executar_teste_sequencial('37.92.0.10', 80, 'POST', 25)
             )
             time.sleep(1)
             
             resultados['servidor_sequencial']['testes_get_concorrentes'].append(
-                self.executarTesteConcorrente('37.92.0.10', 80, 'GET', 5, 10)
+                self.executar_teste_concorrente('37.92.0.10', 80, 'GET', 5, 10)
             )
             time.sleep(2)
             
             resultados['servidor_sequencial']['testes_post_concorrentes'].append(
-                self.executarTesteConcorrente('37.92.0.10', 80, 'POST', 5, 10)
+                self.executar_teste_concorrente('37.92.0.10', 80, 'POST', 5, 10)
             )
             time.sleep(2)
         
@@ -249,22 +249,22 @@ Connection: close\r
             print(f"\nExecução {i+1}/{num_execucoes}")
             
             resultados['servidor_concorrente']['testes_get_sequenciais'].append(
-                self.executarTesteSequencial('37.92.0.11', 80, 'GET', 25)
+                self.executar_teste_sequencial('37.92.0.11', 80, 'GET', 25)
             )
             time.sleep(1)
             
             resultados['servidor_concorrente']['testes_post_sequenciais'].append(
-                self.executarTesteSequencial('37.92.0.11', 80, 'POST', 25)
+                self.executar_teste_sequencial('37.92.0.11', 80, 'POST', 25)
             )
             time.sleep(1)
             
             resultados['servidor_concorrente']['testes_get_concorrentes'].append(
-                self.executarTesteConcorrente('37.92.0.11', 80, 'GET', 5, 10)
+                self.executar_teste_concorrente('37.92.0.11', 80, 'GET', 5, 10)
             )
             time.sleep(2)
             
             resultados['servidor_concorrente']['testes_post_concorrentes'].append(
-                self.executarTesteConcorrente('37.92.0.11', 80, 'POST', 5, 10)
+                self.executar_teste_concorrente('37.92.0.11', 80, 'POST', 5, 10)
             )
             time.sleep(2)
         
@@ -275,7 +275,7 @@ Connection: close\r
 
 if __name__ == "__main__":
     cliente = ClienteTestes()
-    resultados = cliente.executarSuiteCompleta(num_execucoes=10)
+    resultados = cliente.executar_suite_completa(num_execucoes=10)
     
     print("\n" + "=" * 70)
     print("SUITE DE TESTES CONCLUÍDA!")

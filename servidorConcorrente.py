@@ -7,61 +7,61 @@ import json
 
 class ServidorConcorrente:
     def __init__(self, host='37.92.0.11', porta=80):
-        self.host = host
-        self.porta = porta
-        self.idCustom = self.calcularIdCustom()
-        self.request_counter = 0
-        self.counter_lock = threading.Lock()
+        self.host = host # IP do servidor
+        self.porta = porta # porta de escuta (:80)
+        self.id_personalizado = self.calcular_id_personalizado() # Gera ID único
+        self.contador_requisicoes = 0
+        self.lock_contador = threading.Lock()
         
-    def calcularIdCustom(self):
+    def calcular_id_personalizado(self):
         matricula = "20229043792"
         nome = "Victor Rodrigues Luz"
         dados = f"{matricula} {nome}"
         return hashlib.md5(dados.encode()).hexdigest()
     
-    def parse_http_request(self, data):
-        """Faz parsing manual da requisição HTTP"""
+    def analisar_requisicao_http(self, dados):
+        """Faz análise manual da requisição HTTP"""
         try:
-            lines = data.split('\r\n')
-            if not lines:
+            linhas = dados.split('\r\n')
+            if not linhas:
                 return None, None, {}, ''
             
-            request_line = lines[0]
-            parts = request_line.split()
-            if len(parts) < 3:
+            linha_requisicao = linhas[0]
+            partes = linha_requisicao.split()
+            if len(partes) < 3:
                 return None, None, {}, ''
                 
-            method = parts[0]
-            path = parts[1]
-            version = parts[2]
+            metodo = partes[0]
+            caminho = partes[1]
+            versao = partes[2]
             
-            headers = {}
-            body = ''
-            empty_line_found = False
+            cabecalhos = {}
+            corpo = ''
+            linha_vazia_encontrada = False
             
-            for line in lines[1:]:
-                if not line:
-                    empty_line_found = True
+            for linha in linhas[1:]:
+                if not linha:
+                    linha_vazia_encontrada = True
                     continue
                     
-                if not empty_line_found and ':' in line:
-                    key, value = line.split(':', 1)
-                    headers[key.strip()] = value.strip()
-                elif empty_line_found:
-                    body += line
+                if not linha_vazia_encontrada and ':' in linha:
+                    chave, valor = linha.split(':', 1)
+                    cabecalhos[chave.strip()] = valor.strip()
+                elif linha_vazia_encontrada:
+                    corpo += linha
             
-            return method, path, headers, body.strip()
+            return metodo, caminho, cabecalhos, corpo.strip()
             
         except Exception as e:
             return None, None, {}, ''
     
-    def validate_custom_id(self, headers):
+    def validar_id_personalizado(self, cabecalhos):
         """Valida o X-Custom-ID obrigatório"""
-        return headers.get('X-Custom-ID') == self.idCustom
+        return cabecalhos.get('X-Custom-ID') == self.id_personalizado
     
-    def create_http_response(self, status_code, content, content_type="text/html", custom_headers=None):
+    def criar_resposta_http(self, codigo_status, conteudo, tipo_conteudo="text/html", cabecalhos_personalizados=None):
         """Cria resposta HTTP manualmente"""
-        status_messages = {
+        mensagens_status = {
             200: "OK",
             400: "Bad Request",
             404: "Not Found",
@@ -69,34 +69,34 @@ class ServidorConcorrente:
             500: "Internal Server Error"
         }
         
-        response = f"HTTP/1.1 {status_code} {status_messages.get(status_code, 'Unknown')}\r\n"
-        response += f"Content-Type: {content_type}; charset=utf-8\r\n"
-        response += f"X-Custom-ID: {self.idCustom}\r\n"
-        response += f"Server: Concorrente-Socket/Redes-II\r\n"
-        response += f"Date: {datetime.now().strftime('%a, %d %b %Y %H:%M:%S GMT')}\r\n"
-        response += f"Content-Length: {len(content.encode('utf-8'))}\r\n"
-        response += "Connection: close\r\n"
+        resposta = f"HTTP/1.1 {codigo_status} {mensagens_status.get(codigo_status, 'Unknown')}\r\n"
+        resposta += f"Content-Type: {tipo_conteudo}; charset=utf-8\r\n"
+        resposta += f"X-Custom-ID: {self.id_personalizado}\r\n"
+        resposta += f"Server: Concorrente-Socket/Redes-II\r\n"
+        resposta += f"Date: {datetime.now().strftime('%a, %d %b %Y %H:%M:%S GMT')}\r\n"
+        resposta += f"Content-Length: {len(conteudo.encode('utf-8'))}\r\n"
+        resposta += "Connection: close\r\n"
         
-        if custom_headers:
-            for key, value in custom_headers.items():
-                response += f"{key}: {value}\r\n"
+        if cabecalhos_personalizados:
+            for chave, valor in cabecalhos_personalizados.items():
+                resposta += f"{chave}: {valor}\r\n"
         
-        response += "\r\n"
-        response += content
+        resposta += "\r\n"
+        resposta += conteudo
         
-        return response
+        return resposta
     
-    def handle_get_request(self, path, headers):
+    def processar_requisicao_get(self, caminho, cabecalhos):
         """Processa requisições GET"""
-        if not self.validate_custom_id(headers):
-            return self.create_http_response(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
+        if not self.validar_id_personalizado(cabecalhos):
+            return self.criar_resposta_http(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
         
-        with self.counter_lock:
-            self.request_counter += 1
-            current_count = self.request_counter
+        with self.lock_contador:
+            self.contador_requisicoes += 1
+            contador_atual = self.contador_requisicoes
         
-        if path == '/' or path == '/index.html':
-            content = f"""
+        if caminho == '/' or caminho == '/index.html':
+            conteudo = f"""
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,167 +108,167 @@ class ServidorConcorrente:
     <p><strong>Matrícula:</strong> 20229043792</p>
     <p><strong>Nome:</strong> Victor Rodrigues Luz</p>
     <p><strong>Thread:</strong> {threading.current_thread().name}</p>
-    <p><strong>Requisição nº:</strong> {current_count}</p>
+    <p><strong>Requisição nº:</strong> {contador_atual}</p>
     <p><strong>Timestamp:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-    <p><strong>X-Custom-ID:</strong> {self.idCustom}</p>
+    <p><strong>X-Custom-ID:</strong> {self.id_personalizado}</p>
     <p><strong>Tipo:</strong> Concorrente (Socket TCP + Threads)</p>
 </body>
 </html>
 """
-            return self.create_http_response(200, content, "text/html")
+            return self.criar_resposta_http(200, conteudo, "text/html")
             
-        elif path == '/info':
+        elif caminho == '/info':
             info = {
                 "servidor": "concorrente_socket",
                 "matricula": "20229043792",
                 "nome": "Victor Rodrigues Luz",
                 "thread": threading.current_thread().name,
-                "custom_id": self.idCustom,
+                "custom_id": self.id_personalizado,
                 "timestamp": datetime.now().isoformat(),
-                "request_count": current_count,
+                "request_count": contador_atual,
                 "protocol": "TCP/Socket",
                 "concurrency": "thread-based"
             }
-            return self.create_http_response(200, json.dumps(info, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(info, indent=2), "application/json")
             
-        elif path == '/status':
+        elif caminho == '/status':
             status_info = {
                 "status": "online",
                 "server_type": "concurrent",
-                "requests_processed": current_count,
+                "requests_processed": contador_atual,
                 "active_threads": threading.active_count(),
                 "thread_name": threading.current_thread().name,
                 "custom_id_valid": True
             }
-            return self.create_http_response(200, json.dumps(status_info, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(status_info, indent=2), "application/json")
             
-        elif path == '/heavy':
+        elif caminho == '/heavy':
             time.sleep(2)
-            content = {
+            conteudo = {
                 "operation": "heavy_processing",
                 "duration": "2 seconds",
                 "thread": threading.current_thread().name,
                 "timestamp": datetime.now().isoformat()
             }
-            return self.create_http_response(200, json.dumps(content, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(conteudo, indent=2), "application/json")
             
         else:
-            return self.create_http_response(404, "<h1>404 - Recurso Não Encontrado</h1><p>Use: /, /info, /status, /heavy</p>")
+            return self.criar_resposta_http(404, "<h1>404 - Recurso Não Encontrado</h1><p>Use: /, /info, /status, /heavy</p>")
     
-    def handle_post_request(self, path, headers, body):
+    def processar_requisicao_post(self, caminho, cabecalhos, corpo):
         """Processa requisições POST"""
-        if not self.validate_custom_id(headers):
-            return self.create_http_response(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
+        if not self.validar_id_personalizado(cabecalhos):
+            return self.criar_resposta_http(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
         
-        with self.counter_lock:
-            self.request_counter += 1
-            current_count = self.request_counter
+        with self.lock_contador:
+            self.contador_requisicoes += 1
+            contador_atual = self.contador_requisicoes
         
-        if path == '/api/data':
-            processing_time = 0.1
-            time.sleep(processing_time)
+        if caminho == '/api/data':
+            tempo_processamento = 0.1
+            time.sleep(tempo_processamento)
             
-            response_data = {
+            dados_resposta = {
                 "status": "processed",
-                "data_received": body,
-                "data_length": len(body),
-                "processing_time": f"{processing_time}s",
+                "data_received": corpo,
+                "data_length": len(corpo),
+                "processing_time": f"{tempo_processamento}s",
                 "processed_at": datetime.now().isoformat(),
-                "request_id": current_count,
+                "request_id": contador_atual,
                 "thread": threading.current_thread().name,
-                "custom_id": self.idCustom
+                "custom_id": self.id_personalizado
             }
-            return self.create_http_response(200, json.dumps(response_data, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(dados_resposta, indent=2), "application/json")
             
-        elif path == '/api/echo':
-            echo_response = {
-                "echo": body,
+        elif caminho == '/api/echo':
+            resposta_echo = {
+                "echo": corpo,
                 "timestamp": datetime.now().isoformat(),
-                "received_bytes": len(body),
+                "received_bytes": len(corpo),
                 "thread": threading.current_thread().name
             }
-            return self.create_http_response(200, json.dumps(echo_response, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(resposta_echo, indent=2), "application/json")
             
-        elif path == '/api/batch':
+        elif caminho == '/api/batch':
             time.sleep(0.5)
-            batch_response = {
+            resposta_lote = {
                 "operation": "batch_processing",
-                "items_processed": len(body.split(',')),
+                "items_processed": len(corpo.split(',')),
                 "processing_time": "0.5s",
                 "thread": threading.current_thread().name,
                 "timestamp": datetime.now().isoformat()
             }
-            return self.create_http_response(200, json.dumps(batch_response, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(resposta_lote, indent=2), "application/json")
             
         else:
-            return self.create_http_response(404, "<h1>404 - Endpoint POST não encontrado</h1>")
+            return self.criar_resposta_http(404, "<h1>404 - Endpoint POST não encontrado</h1>")
     
-    def handle_client(self, client_socket, client_address):
+    def processar_cliente(self, socket_cliente, endereco_cliente):
         """Processa um cliente em thread separada"""
-        thread_name = threading.current_thread().name
-        start_time = time.time()
+        nome_thread = threading.current_thread().name
+        tempo_inicio = time.time()
         
         try:
-            request_data = b""
-            client_socket.settimeout(10.0)
+            dados_requisicao = b""
+            socket_cliente.settimeout(10.0)
             
             while True:
-                chunk = client_socket.recv(1024)
-                if not chunk:
+                pedaco = socket_cliente.recv(1024)
+                if not pedaco:
                     break
-                request_data += chunk
-                if b'\r\n\r\n' in request_data:
+                dados_requisicao += pedaco
+                if b'\r\n\r\n' in dados_requisicao:
                     break
             
-            if not request_data:
+            if not dados_requisicao:
                 return
             
-            request_text = request_data.decode('utf-8', errors='ignore')
-            method, path, headers, body = self.parse_http_request(request_text)
+            texto_requisicao = dados_requisicao.decode('utf-8', errors='ignore')
+            metodo, caminho, cabecalhos, corpo = self.analisar_requisicao_http(texto_requisicao)
             
-            print(f"[{thread_name}] {client_address} - {method} {path}")
+            print(f"[{nome_thread}] {endereco_cliente} - {metodo} {caminho}")
             
-            if method == 'GET':
-                response = self.handle_get_request(path, headers)
-            elif method == 'POST':
-                response = self.handle_post_request(path, headers, body)
-            elif method == 'HEAD':
-                if path == '/':
-                    response = self.create_http_response(200, "", "text/html")
+            if metodo == 'GET':
+                resposta = self.processar_requisicao_get(caminho, cabecalhos)
+            elif metodo == 'POST':
+                resposta = self.processar_requisicao_post(caminho, cabecalhos, corpo)
+            elif metodo == 'HEAD':
+                if caminho == '/':
+                    resposta = self.criar_resposta_http(200, "", "text/html")
                 else:
-                    response = self.create_http_response(404, "")
+                    resposta = self.criar_resposta_http(404, "")
             else:
-                response = self.create_http_response(405, "<h1>405 - Método Não Permitido</h1>")
+                resposta = self.criar_resposta_http(405, "<h1>405 - Método Não Permitido</h1>")
             
-            client_socket.send(response.encode('utf-8'))
+            socket_cliente.send(resposta.encode('utf-8'))
             
-            processing_time = time.time() - start_time
-            print(f"[{thread_name}] Resposta enviada em {processing_time:.3f}s")
+            tempo_processamento = time.time() - tempo_inicio
+            print(f"[{nome_thread}] Resposta enviada em {tempo_processamento:.3f}s")
             
         except socket.timeout:
-            error_response = self.create_http_response(408, "<h1>408 - Timeout</h1>")
-            client_socket.send(error_response.encode('utf-8'))
-            print(f"[{thread_name}] Timeout com {client_address}")
+            resposta_erro = self.criar_resposta_http(408, "<h1>408 - Timeout</h1>")
+            socket_cliente.send(resposta_erro.encode('utf-8'))
+            print(f"[{nome_thread}] Timeout com {endereco_cliente}")
         except Exception as e:
-            error_response = self.create_http_response(500, f"<h1>500 - Erro Interno</h1><p>{str(e)}</p>")
-            client_socket.send(error_response.encode('utf-8'))
-            print(f"[{thread_name}] Erro: {e}")
+            resposta_erro = self.criar_resposta_http(500, f"<h1>500 - Erro Interno</h1><p>{str(e)}</p>")
+            socket_cliente.send(resposta_erro.encode('utf-8'))
+            print(f"[{nome_thread}] Erro: {e}")
         finally:
-            client_socket.close()
-            print(f"[{thread_name}] Conexão fechada: {client_address}")
+            socket_cliente.close()
+            print(f"[{nome_thread}] Conexão fechada: {endereco_cliente}")
     
-    def start(self):
+    def iniciar(self):
         """Inicia o servidor concorrente"""
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_socket.bind((self.host, self.porta))
-        server_socket.listen(10)
+        socket_servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket_servidor.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        socket_servidor.bind((self.host, self.porta))
+        socket_servidor.listen(10)
         
         print("=" * 70)
         print("SERVIDOR CONCORRENTE - SOCKETS BRUTOS")
         print("=" * 70)
         print(f"Servidor: {self.host}:{self.porta}")
-        print(f"X-Custom-ID: {self.idCustom}")
+        print(f"X-Custom-ID: {self.id_personalizado}")
         print(f"Matrícula: 20229043792")
         print(f"Nome: Victor Rodrigues Luz")
         print("Endpoints: GET /, /info, /status, /heavy")
@@ -278,18 +278,18 @@ class ServidorConcorrente:
         
         try:
             while True:
-                client_socket, client_address = server_socket.accept()
-                print(f"\n[Main] Conexão aceita: {client_address}")
+                socket_cliente, endereco_cliente = socket_servidor.accept()
+                print(f"\n[Main] Conexão aceita: {endereco_cliente}")
                 
-                client_thread = threading.Thread(
-                    target=self.handle_client,
-                    args=(client_socket, client_address),
+                thread_cliente = threading.Thread(
+                    target=self.processar_cliente,
+                    args=(socket_cliente, endereco_cliente),
                     name=f"Thread-{threading.active_count()}"
                 )
-                client_thread.daemon = True
-                client_thread.start()
+                thread_cliente.daemon = True
+                thread_cliente.start()
                 
-                print(f"[Main] Thread iniciada: {client_thread.name}")
+                print(f"[Main] Thread iniciada: {thread_cliente.name}")
                 print(f"[Main] Threads ativas: {threading.active_count() - 1}")
                 
         except KeyboardInterrupt:
@@ -297,8 +297,8 @@ class ServidorConcorrente:
         except Exception as e:
             print(f"\n[Main] Erro: {e}")
         finally:
-            server_socket.close()
+            socket_servidor.close()
 
 if __name__ == "__main__":
     servidor = ServidorConcorrente()
-    servidor.start()
+    servidor.iniciar()
