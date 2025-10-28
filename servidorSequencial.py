@@ -23,36 +23,39 @@ class ServidorSequencial:
            Por conta disso,  o servidor precisa entender sozinho o que o cliente mandou: método (GET, POST...), caminho, cabeçalhos e etc"""
         try:
             linhas = dados.split('\r\n')
-            if not linhas:
+            if len(linhas) == 0:
                 return None, None, {}, ''
-            
-            linha_requisicao = linhas[0]
-            partes = linha_requisicao.split()
-            if len(partes) < 3:
+
+            primeira_linha = linhas[0].split()
+            if len(primeira_linha) < 3:
                 return None, None, {}, ''
-                
-            metodo = partes[0]
-            caminho = partes[1]
-            versao = partes[2]
+
+            metodo = primeira_linha[0]
+            caminho = primeira_linha[1]
             
             cabecalhos = {}
             corpo = ''
-            linha_vazia_encontrada = False
-            
-            for linha in linhas[1:]:
-                if not linha:
-                    linha_vazia_encontrada = True
+            achou_vazio = False
+
+            for i in range(1, len(linhas)):
+                linha_atual = linhas[i]
+                
+                if linha_atual == '':
+                    achou_vazio = True
                     continue
                     
-                if not linha_vazia_encontrada and ':' in linha:
-                    chave, valor = linha.split(':', 1)
-                    cabecalhos[chave.strip()] = valor.strip()
-                elif linha_vazia_encontrada:
-                    corpo += linha
-            
+                if achou_vazio:
+                    corpo += linha_atual
+                else:
+                    if ':' in linha_atual:
+                        partes = linha_atual.split(':', 1)
+                        chave = partes[0].strip()
+                        valor = partes[1].strip()
+                        cabecalhos[chave] = valor
+
             return metodo, caminho, cabecalhos, corpo.strip()
             
-        except Exception as e:
+        except:
             return None, None, {}, ''
     
     def validar_id_personalizado(self, cabecalhos):
