@@ -1,11 +1,9 @@
-version: "3.9"
-
 services:
   servidor-sequencial:
-    build: . # Constrói imagem usando Dockerfile na pasta atual
+    build: .
     container_name: servidor-sequencial
     command: python3 servidorSequencial.py
-    networks: # Este container vai conectar a uma rede
+    networks:
       rede_trabalho:
         ipv4_address: 37.92.0.10
 
@@ -20,15 +18,15 @@ services:
   cliente-teste:
     build: .
     container_name: cliente-teste
-    command: python3 clienteTestes.py # roda o "clienteTestes" por ultimo, apenas quando os 2 servidores estiverem prontos. Assim poderemos fazer os testes.
+    command: bash -c "sleep 15 && python3 clienteTestes.py"
     networks:
       rede_trabalho:
         ipv4_address: 37.92.0.100
     depends_on:
-      - servidor-sequencial # Primeiramente roda o servidor-sequencial
-      - servidor-concorrente # Depois rodamos o servidor-concorrente
+      - servidor-sequencial
+      - servidor-concorrente
     volumes:
-      - ./resultados:/app/resultados # Cria uma pasta chamada "resultados" e guarda as informações
+      - ./resultados:/app/resultados
 
   analisador-metricas:
     build: .
@@ -40,11 +38,11 @@ services:
     volumes:
       - ./resultados:/app/resultados
     depends_on:
-      - cliente-teste # O analisador-metricas só começa depois que o cliente-teste terminar
+      - cliente-teste
 
 networks:
   rede_trabalho:
-    driver: bridge # O tipo bridge serve para conseguir com que os conteiners consigam conversar entre si.
-    ipam: #  Gerenciador de Endereços IP -> define o endereço de cada container
+    driver: bridge
+    ipam:
       config:
         - subnet: 37.92.0.0/16

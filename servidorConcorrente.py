@@ -7,11 +7,12 @@ import json
 
 class ServidorConcorrente:
     def __init__(self, host='37.92.0.11', porta=80):
-        self.host = host # IP do servidor
-        self.porta = porta # porta de escuta (:80)
-        self.id_personalizado = self.calcular_id_personalizado() # Gera ID único
+        self.host = host
+        self.porta = porta
+        self.id_personalizado = self.calcular_id_personalizado()
         self.contador_requisicoes = 0
         self.lock_contador = threading.Lock()
+        self.semaphore = threading.Semaphore(50)
         
     def calcular_id_personalizado(self):
         matricula = "20229043792"
@@ -20,7 +21,6 @@ class ServidorConcorrente:
         return hashlib.md5(dados.encode()).hexdigest()
     
     def analisar_requisicao_http(self, dados):
-        """Faz análise manual da requisição HTTP"""
         try:
             linhas = dados.split('\r\n')
             if not linhas:
@@ -33,7 +33,6 @@ class ServidorConcorrente:
                 
             metodo = partes[0]
             caminho = partes[1]
-            versao = partes[2]
             
             cabecalhos = {}
             corpo = ''
@@ -56,11 +55,9 @@ class ServidorConcorrente:
             return None, None, {}, ''
     
     def validar_id_personalizado(self, cabecalhos):
-        """Valida o X-Custom-ID obrigatório"""
         return cabecalhos.get('X-Custom-ID') == self.id_personalizado
     
     def criar_resposta_http(self, codigo_status, conteudo, tipo_conteudo="text/html", cabecalhos_personalizados=None):
-        """Cria resposta HTTP manualmente"""
         mensagens_status = {
             200: "OK",
             400: "Bad Request",
@@ -87,7 +84,6 @@ class ServidorConcorrente:
         return resposta
     
     def processar_requisicao_get(self, caminho, cabecalhos):
-        """Processa requisições GET"""
         if not self.validar_id_personalizado(cabecalhos):
             return self.criar_resposta_http(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
         
@@ -151,12 +147,20 @@ class ServidorConcorrente:
                 "timestamp": datetime.now().isoformat()
             }
             return self.criar_resposta_http(200, json.dumps(conteudo, indent=2), "application/json")
-            
+
+        elif caminho == '/health':
+            health_info = {
+                "status": "healthy", 
+                "server": "concorrente",
+                "threads_ativas": threading.active_count(),
+                "timestamp": datetime.now().isoformat()
+            }
+            return self.criar_resposta_http(200, json.dumps(health_info, indent=2), "application/json")
+
         else:
-            return self.criar_resposta_http(404, "<h1>404 - Recurso Não Encontrado</h1><p>Use: /, /info, /status, /heavy</p>")
+            return self.criar_resposta_http(404, "<h1>404 - Recurso Não Encontrado</h1><p>Use: /, /info, /status, /heavy, /health</p>")
     
     def processar_requisicao_post(self, caminho, cabecalhos, corpo):
-        """Processa requisições POST"""
         if not self.validar_id_personalizado(cabecalhos):
             return self.criar_resposta_http(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
         
@@ -204,61 +208,60 @@ class ServidorConcorrente:
             return self.criar_resposta_http(404, "<h1>404 - Endpoint POST não encontrado</h1>")
     
     def processar_cliente(self, socket_cliente, endereco_cliente):
-        """Processa um cliente em thread separada"""
-        nome_thread = threading.current_thread().name
-        tempo_inicio = time.time()
-        
-        try:
-            dados_requisicao = b""
-            socket_cliente.settimeout(10.0)
+        with self.semaphore:
+            nome_thread = threading.current_thread().name
+            tempo_inicio = time.time()
             
-            while True:
-                pedaco = socket_cliente.recv(1024)
-                if not pedaco:
-                    break
-                dados_requisicao += pedaco
-                if b'\r\n\r\n' in dados_requisicao:
-                    break
-            
-            if not dados_requisicao:
-                return
-            
-            texto_requisicao = dados_requisicao.decode('utf-8', errors='ignore')
-            metodo, caminho, cabecalhos, corpo = self.analisar_requisicao_http(texto_requisicao)
-            
-            print(f"[{nome_thread}] {endereco_cliente} - {metodo} {caminho}")
-            
-            if metodo == 'GET':
-                resposta = self.processar_requisicao_get(caminho, cabecalhos)
-            elif metodo == 'POST':
-                resposta = self.processar_requisicao_post(caminho, cabecalhos, corpo)
-            elif metodo == 'HEAD':
-                if caminho == '/':
-                    resposta = self.criar_resposta_http(200, "", "text/html")
+            try:
+                dados_requisicao = b""
+                socket_cliente.settimeout(10.0)
+                
+                while True:
+                    pedaco = socket_cliente.recv(1024)
+                    if not pedaco:
+                        break
+                    dados_requisicao += pedaco
+                    if b'\r\n\r\n' in dados_requisicao:
+                        break
+                
+                if not dados_requisicao:
+                    return
+                
+                texto_requisicao = dados_requisicao.decode('utf-8', errors='ignore')
+                metodo, caminho, cabecalhos, corpo = self.analisar_requisicao_http(texto_requisicao)
+                
+                print(f"[{nome_thread}] {endereco_cliente} - {metodo} {caminho}")
+                
+                if metodo == 'GET':
+                    resposta = self.processar_requisicao_get(caminho, cabecalhos)
+                elif metodo == 'POST':
+                    resposta = self.processar_requisicao_post(caminho, cabecalhos, corpo)
+                elif metodo == 'HEAD':
+                    if caminho == '/':
+                        resposta = self.criar_resposta_http(200, "", "text/html")
+                    else:
+                        resposta = self.criar_resposta_http(404, "")
                 else:
-                    resposta = self.criar_resposta_http(404, "")
-            else:
-                resposta = self.criar_resposta_http(405, "<h1>405 - Método Não Permitido</h1>")
-            
-            socket_cliente.send(resposta.encode('utf-8'))
-            
-            tempo_processamento = time.time() - tempo_inicio
-            print(f"[{nome_thread}] Resposta enviada em {tempo_processamento:.3f}s")
-            
-        except socket.timeout:
-            resposta_erro = self.criar_resposta_http(408, "<h1>408 - Timeout</h1>")
-            socket_cliente.send(resposta_erro.encode('utf-8'))
-            print(f"[{nome_thread}] Timeout com {endereco_cliente}")
-        except Exception as e:
-            resposta_erro = self.criar_resposta_http(500, f"<h1>500 - Erro Interno</h1><p>{str(e)}</p>")
-            socket_cliente.send(resposta_erro.encode('utf-8'))
-            print(f"[{nome_thread}] Erro: {e}")
-        finally:
-            socket_cliente.close()
-            print(f"[{nome_thread}] Conexão fechada: {endereco_cliente}")
+                    resposta = self.criar_resposta_http(405, "<h1>405 - Método Não Permitido</h1>")
+                
+                socket_cliente.send(resposta.encode('utf-8'))
+                
+                tempo_processamento = time.time() - tempo_inicio
+                print(f"[{nome_thread}] Resposta enviada em {tempo_processamento:.3f}s")
+                
+            except socket.timeout:
+                resposta_erro = self.criar_resposta_http(408, "<h1>408 - Timeout</h1>")
+                socket_cliente.send(resposta_erro.encode('utf-8'))
+                print(f"[{nome_thread}] Timeout com {endereco_cliente}")
+            except Exception as e:
+                resposta_erro = self.criar_resposta_http(500, f"<h1>500 - Erro Interno</h1><p>{str(e)}</p>")
+                socket_cliente.send(resposta_erro.encode('utf-8'))
+                print(f"[{nome_thread}] Erro: {e}")
+            finally:
+                socket_cliente.close()
+                print(f"[{nome_thread}] Conexão fechada: {endereco_cliente}")
     
     def iniciar(self):
-        """Inicia o servidor concorrente"""
         socket_servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket_servidor.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         socket_servidor.bind((self.host, self.porta))
@@ -271,7 +274,7 @@ class ServidorConcorrente:
         print(f"X-Custom-ID: {self.id_personalizado}")
         print(f"Matrícula: 20229043792")
         print(f"Nome: Victor Rodrigues Luz")
-        print("Endpoints: GET /, /info, /status, /heavy")
+        print("Endpoints: GET /, /info, /status, /heavy, /health")
         print("Endpoints: POST /api/data, /api/echo, /api/batch")
         print("Pressione Ctrl+C para encerrar")
         print("=" * 70)

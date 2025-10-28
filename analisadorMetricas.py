@@ -3,6 +3,7 @@ import statistics
 from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 class AnalisadorMetricas:
     def __init__(self, arquivoResultados):
@@ -32,12 +33,64 @@ class AnalisadorMetricas:
             'amostras': len(grupo)
         }
     
+    def converter_para_formato_antigo(self):
+        """Converte o novo formato para o formato esperado pelo analisador original"""
+        formato_antigo = {
+            'metadata': {
+                'matricula': self.dados['metadata']['matricula'],
+                'nome': self.dados['metadata']['nome'],
+                'subrede': '37.92.0.0/16',
+                'protocolo': 'TCP/Socket',
+                'num_execucoes': self.dados['metadata']['num_execucoes'],
+                'custom_id': self.dados['metadata']['custom_id']
+            },
+            'servidor_sequencial': {
+                'testes_get_sequenciais': [],
+                'testes_post_sequenciais': [],
+                'testes_get_concorrentes': [],
+                'testes_post_concorrentes': []
+            },
+            'servidor_concorrente': {
+                'testes_get_sequenciais': [],
+                'testes_post_sequenciais': [],
+                'testes_get_concorrentes': [],
+                'testes_post_concorrentes': []
+            }
+        }
+        
+        # Mapear cenários para o formato antigo
+        for cenario_nome, cenario in self.dados['cenarios'].items():
+            # Sequencial
+            if 'sequencial' in cenario:
+                if cenario_nome == 'baixa_concorrencia':
+                    formato_antigo['servidor_sequencial']['testes_get_sequenciais'].extend(cenario['sequencial']['GET'])
+                    formato_antigo['servidor_sequencial']['testes_post_sequenciais'].extend(cenario['sequencial']['POST'])
+                else:
+                    formato_antigo['servidor_sequencial']['testes_get_concorrentes'].extend(cenario['sequencial']['GET'])
+                    formato_antigo['servidor_sequencial']['testes_post_concorrentes'].extend(cenario['sequencial']['POST'])
+            
+            # Concorrente
+            if 'concorrente' in cenario:
+                if cenario_nome == 'baixa_concorrencia':
+                    formato_antigo['servidor_concorrente']['testes_get_sequenciais'].extend(cenario['concorrente']['GET'])
+                    formato_antigo['servidor_concorrente']['testes_post_sequenciais'].extend(cenario['concorrente']['POST'])
+                else:
+                    formato_antigo['servidor_concorrente']['testes_get_concorrentes'].extend(cenario['concorrente']['GET'])
+                    formato_antigo['servidor_concorrente']['testes_post_concorrentes'].extend(cenario['concorrente']['POST'])
+        
+        return formato_antigo
+    
     def gerarGraficos(self):
         """Gera gráficos comparativos"""
-        stats_seq_get_conc = self.calcularEstatisticasGrupo(self.dados['servidor_sequencial']['testes_get_concorrentes'])
-        stats_conc_get_conc = self.calcularEstatisticasGrupo(self.dados['servidor_concorrente']['testes_get_concorrentes'])
-        stats_seq_post_conc = self.calcularEstatisticasGrupo(self.dados['servidor_sequencial']['testes_post_concorrentes'])
-        stats_conc_post_conc = self.calcularEstatisticasGrupo(self.dados['servidor_concorrente']['testes_post_concorrentes'])
+        dados_convertidos = self.converter_para_formato_antigo()
+        
+        stats_seq_get_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_sequencial']['testes_get_concorrentes'])
+        stats_conc_get_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_concorrente']['testes_get_concorrentes'])
+        stats_seq_post_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_sequencial']['testes_post_concorrentes'])
+        stats_conc_post_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_concorrente']['testes_post_concorrentes'])
+        
+        # Garantir que o diretório existe
+        os.makedirs('/app/resultados', exist_ok=True)
         
         # Gráfico 1: Throughput Comparativo
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
@@ -69,6 +122,7 @@ class AnalisadorMetricas:
         
         plt.tight_layout()
         plt.savefig('/app/resultados/throughput_comparativo.png', dpi=300, bbox_inches='tight')
+        plt.close()
         
         # Gráfico 2: Tempo de Resposta
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
@@ -99,6 +153,7 @@ class AnalisadorMetricas:
         
         plt.tight_layout()
         plt.savefig('/app/resultados/tempo_resposta_comparativo.png', dpi=300, bbox_inches='tight')
+        plt.close()
         
         # Gráfico 3: Taxa de Sucesso
         fig, ax = plt.subplots(figsize=(10, 6))
@@ -128,6 +183,7 @@ class AnalisadorMetricas:
         
         plt.tight_layout()
         plt.savefig('/app/resultados/taxa_sucesso_comparativo.png', dpi=300, bbox_inches='tight')
+        plt.close()
         
         print("Gráficos gerados em /app/resultados/")
     
@@ -138,21 +194,23 @@ class AnalisadorMetricas:
         print(f"Data: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
         print(f"Matrícula: {self.dados['metadata']['matricula']}")
         print(f"Nome: {self.dados['metadata']['nome']}")
-        print(f"Subrede: {self.dados['metadata']['subrede']}")
-        print(f"Protocolo: {self.dados['metadata']['protocolo']}")
+        print(f"Subrede: 37.92.0.0/16")
+        print(f"Protocolo: TCP/Socket")
         print(f"Execuções: {self.dados['metadata']['num_execucoes']}")
         print(f"X-Custom-ID: {self.dados['metadata']['custom_id']}")
         print("=" * 80)
         
-        stats_seq_get_seq = self.calcularEstatisticasGrupo(self.dados['servidor_sequencial']['testes_get_sequenciais'])
-        stats_seq_post_seq = self.calcularEstatisticasGrupo(self.dados['servidor_sequencial']['testes_post_sequenciais'])
-        stats_seq_get_conc = self.calcularEstatisticasGrupo(self.dados['servidor_sequencial']['testes_get_concorrentes'])
-        stats_seq_post_conc = self.calcularEstatisticasGrupo(self.dados['servidor_sequencial']['testes_post_concorrentes'])
+        dados_convertidos = self.converter_para_formato_antigo()
         
-        stats_conc_get_seq = self.calcularEstatisticasGrupo(self.dados['servidor_concorrente']['testes_get_sequenciais'])
-        stats_conc_post_seq = self.calcularEstatisticasGrupo(self.dados['servidor_concorrente']['testes_post_sequenciais'])
-        stats_conc_get_conc = self.calcularEstatisticasGrupo(self.dados['servidor_concorrente']['testes_get_concorrentes'])
-        stats_conc_post_conc = self.calcularEstatisticasGrupo(self.dados['servidor_concorrente']['testes_post_concorrentes'])
+        stats_seq_get_seq = self.calcularEstatisticasGrupo(dados_convertidos['servidor_sequencial']['testes_get_sequenciais'])
+        stats_seq_post_seq = self.calcularEstatisticasGrupo(dados_convertidos['servidor_sequencial']['testes_post_sequenciais'])
+        stats_seq_get_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_sequencial']['testes_get_concorrentes'])
+        stats_seq_post_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_sequencial']['testes_post_concorrentes'])
+        
+        stats_conc_get_seq = self.calcularEstatisticasGrupo(dados_convertidos['servidor_concorrente']['testes_get_sequenciais'])
+        stats_conc_post_seq = self.calcularEstatisticasGrupo(dados_convertidos['servidor_concorrente']['testes_post_sequenciais'])
+        stats_conc_get_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_concorrente']['testes_get_concorrentes'])
+        stats_conc_post_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_concorrente']['testes_post_concorrentes'])
         
         self.analisarComparativoGeral(stats_seq_get_conc, stats_conc_get_conc, stats_seq_post_conc, stats_conc_post_conc)
         self.analisarServidorDetalhado('SEQUENCIAL', stats_seq_get_seq, stats_seq_post_seq, stats_seq_get_conc, stats_seq_post_conc)
@@ -264,6 +322,7 @@ class AnalisadorMetricas:
         
         nome_arquivo = f"relatorio_analise_completo_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
         
+        os.makedirs('/app/resultados', exist_ok=True)
         with open(f'/app/resultados/{nome_arquivo}', 'w', encoding='utf-8') as arquivo:
             arquivo.write(conteudo)
         
@@ -272,10 +331,20 @@ class AnalisadorMetricas:
 
 def encontrarArquivoRecente():
     import os
-    if os.path.exists('resultados/metricas_completas.json'):
-        return 'resultados/metricas_completas.json'
-    if os.path.exists('metricas_completas.json'):
-        return 'metricas_completas.json'
+    caminhos_tentados = [
+        'resultados/metricas_completas.json',
+        '/app/resultados/metricas_completas.json', 
+        'metricas_completas.json'
+    ]
+    
+    for caminho in caminhos_tentados:
+        if os.path.exists(caminho):
+            print(f"Arquivo encontrado: {caminho}")
+            return caminho
+    
+    print("Nenhum arquivo de resultados encontrado nos caminhos:")
+    for caminho in caminhos_tentados:
+        print(f"  - {caminho}")
     return None
 
 if __name__ == "__main__":

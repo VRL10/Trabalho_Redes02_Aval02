@@ -5,41 +5,30 @@ import threading
 import hashlib
 import json
 from datetime import datetime
+import os
 
-class ClienteTestes:
+class ClienteTestesServidores:
     def __init__(self):
         self.id_personalizado = hashlib.md5("20229043792 Victor Rodrigues Luz".encode()).hexdigest()
     
-    def criar_requisicao_http(self, metodo="GET", caminho="/", corpo=""):
-        if metodo == "GET":
-            requisicao = f"""GET {caminho} HTTP/1.1\r
-Host: 37.92.0.10\r
+    def criar_requisicao_http(self, caminho="/", ip_alvo="37.92.0.10"):
+        requisicao = f"""GET {caminho} HTTP/1.1\r
+Host: {ip_alvo}\r
 X-Custom-ID: {self.id_personalizado}\r
 User-Agent: Cliente-Teste-Sockets/Redes-II\r
 Connection: close\r
 \r
 """
-        else:
-            requisicao = f"""POST {caminho} HTTP/1.1\r
-Host: 37.92.0.10\r
-X-Custom-ID: {self.id_personalizado}\r
-User-Agent: Cliente-Teste-Sockets/Redes-II\r
-Content-Type: application/x-www-form-urlencoded\r
-Content-Length: {len(corpo)}\r
-Connection: close\r
-\r
-{corpo}"""
-        
         return requisicao
     
-    def medir_requisicao(self, ip, porta, metodo, caminho, corpo=""):
+    def medir_requisicao(self, ip, porta, caminho="/"):
         inicio = time.time()
         try:
             s = socket.socket()
             s.settimeout(10)
             s.connect((ip, porta))
             
-            requisicao = self.criar_requisicao_http(metodo, caminho, corpo)
+            requisicao = self.criar_requisicao_http(caminho, ip)
             s.send(requisicao.encode())
             
             resposta = b""
@@ -59,51 +48,13 @@ Connection: close\r
                 return tempo, 400, False
                 
         except Exception as e:
+            print(f"Erro na requisição para {ip}:{porta}: {e}")
             return time.time() - inicio, 0, False
     
-    def executar_teste_sequencial(self, ip, porta, metodo, num_requisicoes=25):
-        print(f"Teste SEQUENCIAL {metodo}: {ip}:{porta} - {num_requisicoes} requisições")
+    def executar_teste_servidor(self, ip, porta, num_threads, requisicoes_por_thread):
+        total_requisicoes = num_threads * requisicoes_por_thread
         
-        tempos = []
-        sucessos = 0
-        inicio_teste = time.time()
-        
-        for i in range(num_requisicoes):
-            if metodo == "GET":
-                caminho = "/info" if i % 3 == 0 else "/"
-                corpo = ""
-            else:
-                caminho = "/api/data"
-                corpo = f"dados=teste_{i}_valor_{i*2}"
-            
-            tempo, status, sucesso = self.medir_requisicao(ip, porta, metodo, caminho, corpo)
-            
-            tempos.append(tempo)
-            if sucesso:
-                sucessos += 1
-            
-            if (i + 1) % 10 == 0:
-                print(f"  {metodo} Concluídas: {i + 1}/{num_requisicoes}")
-        
-        tempo_total = time.time() - inicio_teste
-        
-        return {
-            'metodo': metodo,
-            'cenario': 'sequencial',
-            'total_requisicoes': num_requisicoes,
-            'sucessos': sucessos,
-            'falhas': num_requisicoes - sucessos,
-            'taxa_sucesso': (sucessos / num_requisicoes) * 100,
-            'tempo_total': tempo_total,
-            'tempo_medio': statistics.mean(tempos),
-            'tempo_minimo': min(tempos),
-            'tempo_maximo': max(tempos),
-            'desvio_padrao': statistics.stdev(tempos) if len(tempos) > 1 else 0,
-            'throughput': num_requisicoes / tempo_total
-        }
-    
-    def executar_teste_concorrente(self, ip, porta, metodo, num_threads=5, requisicoes_por_thread=10):
-        print(f"Teste CONCORRENTE {metodo}: {ip}:{porta} - {num_threads} threads × {requisicoes_por_thread} reqs")
+        print(f"Teste Servidor {ip}:{porta} - {num_threads} threads × {requisicoes_por_thread} reqs = {total_requisicoes} total")
         
         resultados = {
             'tempos': [],
@@ -113,28 +64,9 @@ Connection: close\r
         
         def thread_trabalhadora(id_thread):
             for i in range(requisicoes_por_thread):
-                if metodo == "GET":
-                    if i % 4 == 0:
-                        caminho = "/heavy"
-                    elif i % 3 == 0:
-                        caminho = "/status"
-                    elif i % 2 == 0:
-                        caminho = "/info"
-                    else:
-                        caminho = "/"
-                    corpo = ""
-                else:
-                    if i % 3 == 0:
-                        caminho = "/api/batch"
-                        corpo = f"item_{i},item_{i+1},item_{i+2}"
-                    elif i % 2 == 0:
-                        caminho = "/api/echo"
-                        corpo = f"dados_thread_{id_thread}_req_{i}"
-                    else:
-                        caminho = "/api/data"
-                        corpo = f"dados=thread_{id_thread}_req_{i}"
+                caminho = "/" if i % 2 == 0 else "/info"
                 
-                tempo, status, sucesso = self.medir_requisicao(ip, porta, metodo, caminho, corpo)
+                tempo, status, sucesso = self.medir_requisicao(ip, porta, caminho)
                 
                 with resultados['lock']:
                     resultados['tempos'].append(tempo)
@@ -153,11 +85,10 @@ Connection: close\r
             thread.join()
         
         tempo_total = time.time() - inicio_teste
-        total_requisicoes = num_threads * requisicoes_por_thread
         
         return {
-            'metodo': metodo,
-            'cenario': 'concorrente',
+            'ip': ip,
+            'porta': porta,
             'total_requisicoes': total_requisicoes,
             'threads': num_threads,
             'requisicoes_por_thread': requisicoes_por_thread,
@@ -165,20 +96,21 @@ Connection: close\r
             'falhas': total_requisicoes - resultados['sucessos'],
             'taxa_sucesso': (resultados['sucessos'] / total_requisicoes) * 100,
             'tempo_total': tempo_total,
-            'tempo_medio': statistics.mean(resultados['tempos']),
-            'tempo_minimo': min(resultados['tempos']),
-            'tempo_maximo': max(resultados['tempos']),
+            'tempo_medio': statistics.mean(resultados['tempos']) if resultados['tempos'] else 0,
+            'tempo_minimo': min(resultados['tempos']) if resultados['tempos'] else 0,
+            'tempo_maximo': max(resultados['tempos']) if resultados['tempos'] else 0,
             'desvio_padrao': statistics.stdev(resultados['tempos']) if len(resultados['tempos']) > 1 else 0,
-            'throughput': total_requisicoes / tempo_total
+            'throughput': total_requisicoes / tempo_total if tempo_total > 0 else 0
         }
     
-    def executar_suite_completa(self, num_execucoes=10):
+    def executar_suite_comparativa_servidores(self, num_execucoes=10):
         print("=" * 70)
-        print("SUITE COMPLETA DE TESTES - SOCKETS BRUTOS")
+        print("SUITE DE TESTES - COMPARAÇÃO SERVIDORES SEQUENCIAL vs CONCORRENTE")
         print("=" * 70)
         print(f"Início: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-        print(f"Execuções por teste: {num_execucoes}")
+        print(f"Execuções por cenário: {num_execucoes}")
         print(f"X-Custom-ID: {self.id_personalizado}")
+        print("IPs baseados na matrícula 20229043792 → 3792")
         print("Servidor Sequencial: 37.92.0.10:80")
         print("Servidor Concorrente: 37.92.0.11:80")
         print("=" * 70)
@@ -190,94 +122,84 @@ Connection: close\r
                 'data_testes': datetime.now().isoformat(),
                 'num_execucoes': num_execucoes,
                 'custom_id': self.id_personalizado,
-                'subrede': '37.92.0.0/16',
-                'protocolo': 'TCP/Sockets-Brutos',
-                'metricas_coletadas': [
-                    'Tempo de Resposta (s)',
-                    'Throughput (req/s)', 
-                    'Taxa de Sucesso (%)',
-                    'Desvio Padrão (consistência)',
-                    'Latência Mínima/Máxima'
-                ]
+                'configuracao': 'comparacao_servidores_sequencial_vs_concorrente',
+                'metricas': ['throughput', 'tempo_medio', 'taxa_sucesso', 'desvio_padrao']
             },
-            'servidor_sequencial': {
-                'testes_get_sequenciais': [],
-                'testes_post_sequenciais': [],
-                'testes_get_concorrentes': [],
-                'testes_post_concorrentes': []
-            },
-            'servidor_concorrente': {
-                'testes_get_sequenciais': [],
-                'testes_post_sequenciais': [],
-                'testes_get_concorrentes': [],
-                'testes_post_concorrentes': []
-            }
+            'cenarios': {}
         }
         
-        print("\n" + "=" * 50)
-        print("SERVIDOR SEQUENCIAL")
-        print("=" * 50)
+        cenarios = [
+            {'nome': 'carga_baixa', 'threads': 1, 'reqs_por_thread': 10},
+            {'nome': 'carga_media', 'threads': 5, 'reqs_por_thread': 4},
+            {'nome': 'carga_alta', 'threads': 10, 'reqs_por_thread': 3}
+        ]
         
-        for i in range(num_execucoes):
-            print(f"\nExecução {i+1}/{num_execucoes}")
-            
-            resultados['servidor_sequencial']['testes_get_sequenciais'].append(
-                self.executar_teste_sequencial('37.92.0.10', 80, 'GET', 25)
-            )
-            time.sleep(1)
-            
-            resultados['servidor_sequencial']['testes_post_sequenciais'].append(
-                self.executar_teste_sequencial('37.92.0.10', 80, 'POST', 25)
-            )
-            time.sleep(1)
-            
-            resultados['servidor_sequencial']['testes_get_concorrentes'].append(
-                self.executar_teste_concorrente('37.92.0.10', 80, 'GET', 5, 10)
-            )
-            time.sleep(2)
-            
-            resultados['servidor_sequencial']['testes_post_concorrentes'].append(
-                self.executar_teste_concorrente('37.92.0.10', 80, 'POST', 5, 10)
-            )
-            time.sleep(2)
+        servidores = [
+            {'nome': 'sequencial', 'ip': '37.92.0.10', 'porta': 80},
+            {'nome': 'concorrente', 'ip': '37.92.0.11', 'porta': 80}
+        ]
         
-        print("\n" + "=" * 50)
-        print("SERVIDOR CONCORRENTE")
-        print("=" * 50)
+        for cenario in cenarios:
+            nome_cenario = cenario['nome']
+            resultados['cenarios'][nome_cenario] = {}
+            
+            print(f"\n{'='*50}")
+            print(f"CENÁRIO: {nome_cenario.upper().replace('_', ' ')}")
+            print(f"Threads: {cenario['threads']}, Reqs/thread: {cenario['reqs_por_thread']}")
+            print(f"Total: {cenario['threads'] * cenario['reqs_por_thread']} requisições")
+            print(f"{'='*50}")
+            
+            for servidor in servidores:
+                print(f"\n--- SERVIDOR {servidor['nome'].upper()} ---")
+                
+                resultados_servidor = []
+                
+                for execucao in range(num_execucoes):
+                    print(f"Execução {execucao + 1}/{num_execucoes}")
+                    
+                    resultado = self.executar_teste_servidor(
+                        servidor['ip'], servidor['porta'],
+                        cenario['threads'], cenario['reqs_por_thread']
+                    )
+                    resultados_servidor.append(resultado)
+                    time.sleep(0.5)
+                
+                resultados['cenarios'][nome_cenario][servidor['nome']] = resultados_servidor
         
-        for i in range(num_execucoes):
-            print(f"\nExecução {i+1}/{num_execucoes}")
-            
-            resultados['servidor_concorrente']['testes_get_sequenciais'].append(
-                self.executar_teste_sequencial('37.92.0.11', 80, 'GET', 25)
-            )
-            time.sleep(1)
-            
-            resultados['servidor_concorrente']['testes_post_sequenciais'].append(
-                self.executar_teste_sequencial('37.92.0.11', 80, 'POST', 25)
-            )
-            time.sleep(1)
-            
-            resultados['servidor_concorrente']['testes_get_concorrentes'].append(
-                self.executar_teste_concorrente('37.92.0.11', 80, 'GET', 5, 10)
-            )
-            time.sleep(2)
-            
-            resultados['servidor_concorrente']['testes_post_concorrentes'].append(
-                self.executar_teste_concorrente('37.92.0.11', 80, 'POST', 5, 10)
-            )
-            time.sleep(2)
-        
-        with open('/app/resultados/metricas_completas.json', 'w', encoding='utf-8') as f:
+        os.makedirs('resultados', exist_ok=True)
+        with open('resultados/metricas_completas.json', 'w', encoding='utf-8') as f:
             json.dump(resultados, f, indent=2, ensure_ascii=False)
         
+        self.gerar_relatorio_comparativo_servidores(resultados)
+        
         return resultados
+    
+    def gerar_relatorio_comparativo_servidores(self, resultados):
+        print("\n" + "=" * 70)
+        print("RELATÓRIO COMPARATIVO - SERVIDORES SEQUENCIAL vs CONCORRENTE")
+        print("=" * 70)
+        
+        for cenario_nome, cenario in resultados['cenarios'].items():
+            print(f"\n{cenario_nome.upper().replace('_', ' ')}:")
+            
+            for servidor_nome, servidor in cenario.items():
+                tempos_medio = statistics.mean([r['tempo_medio'] for r in servidor])
+                throughput_medio = statistics.mean([r['throughput'] for r in servidor])
+                sucesso_medio = statistics.mean([r['taxa_sucesso'] for r in servidor])
+                consistencia = statistics.mean([r['desvio_padrao'] for r in servidor])
+                
+                print(f"  {servidor_nome.upper():<12} | Throughput: {throughput_medio:6.1f} req/s")
+                print(f"  {'':<12} | Tempo Médio: {tempos_medio:6.3f}s")
+                print(f"  {'':<12} | Sucesso: {sucesso_medio:6.1f}%")
+                print(f"  {'':<12} | Consistência: {consistencia:6.4f}s")
 
 if __name__ == "__main__":
-    cliente = ClienteTestes()
-    resultados = cliente.executar_suite_completa(num_execucoes=10)
+    cliente = ClienteTestesServidores()
+    resultados = cliente.executar_suite_comparativa_servidores(num_execucoes=10)
     
     print("\n" + "=" * 70)
-    print("SUITE DE TESTES CONCLUÍDA!")
+    print(" SUITE DE TESTES CONCLUÍDA!")
     print("=" * 70)
-    print("Resultados salvos em: /app/resultados/metricas_completas.json")
+    print("Resultados salvos em: resultados/metricas_completas.json")
+    print("Análise focada na comparação: Servidor Sequencial vs Concorrente")
+    print("=" * 70)
