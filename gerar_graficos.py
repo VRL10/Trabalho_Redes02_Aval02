@@ -6,40 +6,37 @@ import os
 import pandas as pd
 from scipy import stats
 
-# Criar diretório para salvar as imagens
+
 os.makedirs('graficos_relatorio', exist_ok=True)
 
-# Carregar dados do JSON
+
 with open('resultados/metricas_completas.json', 'r') as f:
     dados = json.load(f)
 
-# Configuração global de estilo
+
 plt.style.use('default')
 sns.set_palette("husl")
 
 print("Gerando gráficos individuais para o relatório...")
 
-# Definir cenários e títulos
+
 cenarios = ['carga_baixa', 'carga_media', 'carga_alta']
 titulos = ['Carga Baixa (10 req)', 'Carga Média (20 req)', 'Carga Alta (30 req)']
 cores = ['#2E86AB', '#A23B72']
 
-# =============================================================================
-# 1. COMPARAÇÃO DE THROUGHPUT POR CENÁRIO (3 IMAGENS SEPARADAS)
-# =============================================================================
 print("Gerando gráficos 1-3: Comparação de Throughput por Cenário")
 
 for i, cenario in enumerate(cenarios):
     fig, ax = plt.subplots(figsize=(8, 6))
     
-    # Calcular médias
+
     seq_throughputs = [run['throughput'] for run in dados['cenarios'][cenario]['sequencial']]
     conc_throughputs = [run['throughput'] for run in dados['cenarios'][cenario]['concorrente']]
     
     mean_seq = np.mean(seq_throughputs)
     mean_conc = np.mean(conc_throughputs)
     
-    # Gráfico de barras
+
     bars = ax.bar(['Sequencial', 'Concorrente'], [mean_seq, mean_conc], 
                   color=cores, alpha=0.8)
     
@@ -47,7 +44,7 @@ for i, cenario in enumerate(cenarios):
     ax.set_ylabel('Throughput (req/s)')
     ax.grid(axis='y', alpha=0.3)
     
-    # Adicionar valores nas barras
+
     for bar in bars:
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height + 5,
@@ -58,9 +55,6 @@ for i, cenario in enumerate(cenarios):
     plt.close()
     print(f"✓ Gráfico {i+1} salvo: throughput_{cenario}.png")
 
-# =============================================================================
-# 4. TEMPO MÉDIO DE RESPOSTA POR CENÁRIO (3 IMAGENS SEPARADAS)
-# =============================================================================
 print("Gerando gráficos 4-6: Tempo Médio de Resposta por Cenário")
 
 for i, cenario in enumerate(cenarios):
@@ -89,9 +83,7 @@ for i, cenario in enumerate(cenarios):
     plt.close()
     print(f"✓ Gráfico {i+4} salvo: tempo_medio_{cenario}.png")
 
-# =============================================================================
-# 7. EVOLUÇÃO DO THROUGHPUT (3 IMAGENS SEPARADAS)
-# =============================================================================
+
 print("Gerando gráficos 7-9: Evolução do Throughput por Cenário")
 
 for i, cenario in enumerate(cenarios):
@@ -119,9 +111,6 @@ for i, cenario in enumerate(cenarios):
     plt.close()
     print(f"✓ Gráfico {i+7} salvo: evolucao_throughput_{cenario}.png")
 
-# =============================================================================
-# 10. BOXPLOT - DISTRIBUIÇÃO DO THROUGHPUT (3 IMAGENS SEPARADAS)
-# =============================================================================
 print("Gerando gráficos 10-12: Boxplot de Throughput por Cenário")
 
 for i, cenario in enumerate(cenarios):
@@ -148,9 +137,7 @@ for i, cenario in enumerate(cenarios):
     plt.close()
     print(f"✓ Gráfico {i+10} salvo: boxplot_throughput_{cenario}.png")
 
-# =============================================================================
-# 13. TAXA DE SUCESSO (1 IMAGEM)
-# =============================================================================
+
 print("Gerando gráfico 13: Taxa de Sucesso")
 
 fig, ax = plt.subplots(figsize=(12, 6))
@@ -183,12 +170,10 @@ plt.savefig('graficos_relatorio/taxa_sucesso.png', dpi=300, bbox_inches='tight')
 plt.close()
 print("✓ Gráfico 13 salvo: taxa_sucesso.png")
 
-# =============================================================================
-# 14. ANÁLISE DE DESEMPENHO RELATIVO (1 IMAGEM)
-# =============================================================================
+
 print("Gerando gráfico 14: Desempenho Relativo")
 
-# Calcular vantagem do concorrente em cada cenário
+
 vantagens = []
 for cenario in cenarios:
     seq_throughput = np.mean([run['throughput'] for run in dados['cenarios'][cenario]['sequencial']])
@@ -217,12 +202,9 @@ plt.savefig('graficos_relatorio/desempenho_relativo.png', dpi=300, bbox_inches='
 plt.close()
 print("✓ Gráfico 14 salvo: desempenho_relativo.png")
 
-# =============================================================================
-# 15. RESUMO ESTATÍSTICO (1 IMAGEM)
-# =============================================================================
 print("Gerando gráfico 15: Resumo Estatístico")
 
-# Preparar dados para tabela
+
 dados_resumo = []
 for cenario in cenarios:
     seq_throughputs = [run['throughput'] for run in dados['cenarios'][cenario]['sequencial']]
@@ -237,7 +219,7 @@ for cenario in cenarios:
         'Vantagem_%': (np.mean(conc_throughputs) / np.mean(seq_throughputs)) * 100
     })
 
-# Criar tabela visual
+
 fig, ax = plt.subplots(figsize=(12, 4))
 ax.axis('tight')
 ax.axis('off')

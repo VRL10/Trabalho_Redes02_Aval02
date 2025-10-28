@@ -6,7 +6,7 @@ import threading
 import json
 
 class ServidorConcorrente:
-    def __init__(self, host='37.92.0.11', porta=80):
+    def __init__(self,host='37.92.0.11',porta=80):
         self.host = host
         self.porta = porta
         self.id_personalizado = self.calcular_id_personalizado()
@@ -22,7 +22,7 @@ class ServidorConcorrente:
         
         return hashlib.md5(dados.encode()).hexdigest()
     
-    def analisar_requisicao_http(self, dados):
+    def analisar_requisicao_http(self,dados):
         try:
             linhas = dados.split('\r\n')
             if not linhas:
@@ -85,7 +85,7 @@ class ServidorConcorrente:
         
         return resposta
     
-    def processar_requisicao_get(self, caminho, cabecalhos):
+    def processar_requisicao_get(self,caminho, cabecalhos):
         if not self.validar_id_personalizado(cabecalhos):
             return self.criar_resposta_http(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
         
@@ -131,11 +131,11 @@ class ServidorConcorrente:
             
         elif caminho == '/status':
             status_info = {
-                "status": "online",
-                "server_type": "concurrent",
-                "requests_processed": contador_atual,
-                "active_threads": threading.active_count(),
-                "thread_name": threading.current_thread().name,
+                "status":"online",
+                "server_type":"concurrent",
+                "requests_processed":contador_atual,
+                "active_threads":threading.active_count(),
+                "thread_name":threading.current_thread().name,
                 "custom_id_valid": True
             }
             return self.criar_resposta_http(200, json.dumps(status_info, indent=2), "application/json")
@@ -160,9 +160,9 @@ class ServidorConcorrente:
             return self.criar_resposta_http(200, json.dumps(health_info, indent=2), "application/json")
 
         else:
-            return self.criar_resposta_http(404, "<h1>404 - Recurso Não Encontrado</h1><p>Use: /, /info, /status, /heavy, /health</p>")
+            return self.criar_resposta_http(404,"<h1>404 - Recurso Não Encontrado</h1><p>Use: /, /info, /status, /heavy, /health</p>")
     
-    def processar_requisicao_post(self, caminho, cabecalhos, corpo):
+    def processar_requisicao_post(self, caminho,cabecalhos, corpo):
         if not self.validar_id_personalizado(cabecalhos):
             return self.criar_resposta_http(400, "<h1>400 - X-Custom-ID inválido ou ausente</h1>")
         
@@ -193,7 +193,7 @@ class ServidorConcorrente:
                 "received_bytes": len(corpo),
                 "thread": threading.current_thread().name
             }
-            return self.criar_resposta_http(200, json.dumps(resposta_echo, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(resposta_echo,indent=2), "application/json")
             
         elif caminho == '/api/batch':
             time.sleep(0.5)
@@ -209,7 +209,7 @@ class ServidorConcorrente:
         else:
             return self.criar_resposta_http(404, "<h1>404 - Endpoint POST não encontrado</h1>")
     
-    def processar_cliente(self, socket_cliente, endereco_cliente):
+    def processar_cliente(self,socket_cliente,endereco_cliente):
         with self.semaphore:
             nome_thread = threading.current_thread().name
             tempo_inicio = time.time()
@@ -274,7 +274,7 @@ class ServidorConcorrente:
         print("=" * 70)
         print(f"Servidor: {self.host}:{self.porta}")
         print(f"X-Custom-ID: {self.id_personalizado}")
-        print(f"MATRicula: 20229043792")
+        print(f"MATRicula:20229043792")
         print(f"Nome: Victor Rodrigues Luz")
         print("Endpoints: GET /, /info, /status, /heavy, /health")
         print("Endpoints: POST /api/data, /api/echo, /api/batch")

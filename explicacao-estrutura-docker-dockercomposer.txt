@@ -1,9 +1,9 @@
-🐳 DOCKERFILE - A "RECEITA" DO CONTAINER
-📝 Explicação simples:
+ DOCKERFILE - A "RECEITA" DO CONTAINER
+ Explicação simples:
 
 "O Dockerfile é como uma receita que ensina como montar nosso ambiente. Ele parte de um Ubuntu limpinho e vai adicionando tudo que precisamos."
 
-🔍 Ponto a ponto (mostrando o código): FROM ubuntu:22.04
+ Ponto a ponto (mostrando o código): FROM ubuntu:22.04
 "Começamos com um Ubuntu limpo - nossa base":
 FROM ubuntu:22.04
 
@@ -25,11 +25,11 @@ RUN pip install matplotlib numpy seaborn pandas
 CMD ["python3", "servidorSequencial.py"]
 
 
-🐳 DOCKER COMPOSE - O "coordenador"
-📝 Explicação simples:
+ DOCKER COMPOSE - O "coordenador"
+ Explicação simples:
 
 "Se o Dockerfile é a receita, o Docker Compose é o chef que coordena todos os serviços ao mesmo tempo. Ele gerencia 4 serviços que conversam entre si."
-🔍 Ponto a ponto (mostrando o código):
+ Ponto a ponto (mostrando o código):
 "Servidor sequencial no IP 37.92.0.10 - IP fixo para testes consistentes":
 services:
   servidor-sequencial:
@@ -70,7 +70,7 @@ networks:
 
 
 
-📦 NOSSA INFRAESTRUTURA DOCKER:
+ NOSSA INFRAESTRUTURA DOCKER:
 
 DOCKERFILE (Receita)              DOCKER COMPOSE (Orquestrador)
 ├── Ubuntu base                   ├──  Servidor Sequencial (37.92.0.10)

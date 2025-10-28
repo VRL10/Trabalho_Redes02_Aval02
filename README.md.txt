@@ -30,14 +30,10 @@ docker-compose down
 docker system prune -f
 
 2. Executar os testes
-1° - Limpar ambiente (opcional - se já executou antes):
 
-	docker-compose down
-	docker system prune -f
+1° - Construir imagens, subir servidores e executar testes automaticamente:
 
-2° - Construir imagens, subir servidores e executar testes automaticamente:
-
-	docker-compose up --build
+	docker-compose up
 
 3. IMPORTANTE: Leia isso antes de executar
 

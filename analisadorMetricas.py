@@ -89,10 +89,8 @@ class AnalisadorMetricas:
         stats_seq_post_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_sequencial']['testes_post_concorrentes'])
         stats_conc_post_conc = self.calcularEstatisticasGrupo(dados_convertidos['servidor_concorrente']['testes_post_concorrentes'])
         
-        # Garantir que o diretório existe
         os.makedirs('/app/resultados', exist_ok=True)
         
-        # Gráfico 1: Throughput Comparativo
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
         
         # Throughput GET
@@ -124,7 +122,6 @@ class AnalisadorMetricas:
         plt.savefig('/app/resultados/throughput_comparativo.png', dpi=300, bbox_inches='tight')
         plt.close()
         
-        # Gráfico 2: Tempo de Resposta
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
         
         # Tempo GET
