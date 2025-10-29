@@ -2,7 +2,7 @@
   "metadata": {
     "matricula": "20229043792",
     "nome": "Victor Rodrigues Luz",
-    "data_testes": "2025-10-28T15:12:30.816609",
+    "data_testes": "2025-10-29T11:47:40.847765",
     "num_execucoes": 10,
     "custom_id": "24793aa6150355db56850214cc1c4046",
     "configuracao": "comparacao_servidores_sequencial_vs_concorrente",
@@ -25,12 +25,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.015734195709228516,
-          "tempo_medio": 0.0013170719146728515,
-          "tempo_minimo": 0.0008764266967773438,
-          "tempo_maximo": 0.003321409225463867,
-          "desvio_padrao": 0.0007406276142163905,
-          "throughput": 635.5583840955238
+          "tempo_total": 0.023919343948364258,
+          "tempo_medio": 0.0018646955490112306,
+          "tempo_minimo": 0.0009572505950927734,
+          "tempo_maximo": 0.0042572021484375,
+          "desvio_padrao": 0.0010048292148948244,
+          "throughput": 418.07166708198355
         },
         {
           "ip": "37.92.0.10",
@@ -41,12 +41,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.018215179443359375,
-          "tempo_medio": 0.001381850242614746,
-          "tempo_minimo": 0.0009801387786865234,
-          "tempo_maximo": 0.0030202865600585938,
-          "desvio_padrao": 0.000600363372661887,
-          "throughput": 548.9926701570681
+          "tempo_total": 0.024364709854125977,
+          "tempo_medio": 0.0019172430038452148,
+          "tempo_minimo": 0.0012927055358886719,
+          "tempo_maximo": 0.0027685165405273438,
+          "desvio_padrao": 0.0004560794500672371,
+          "throughput": 410.4296771794546
         },
         {
           "ip": "37.92.0.10",
@@ -57,12 +57,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.03224539756774902,
-          "tempo_medio": 0.0025949716567993165,
-          "tempo_minimo": 0.0010800361633300781,
-          "tempo_maximo": 0.004025459289550781,
-          "desvio_padrao": 0.0009767186615787574,
-          "throughput": 310.1217771928398
+          "tempo_total": 0.03237271308898926,
+          "tempo_medio": 0.0026398420333862303,
+          "tempo_minimo": 0.0015363693237304688,
+          "tempo_maximo": 0.004651308059692383,
+          "desvio_padrao": 0.0008927429390131257,
+          "throughput": 308.9021291638742
         },
         {
           "ip": "37.92.0.10",
@@ -73,12 +73,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.028894424438476562,
-          "tempo_medio": 0.0021367311477661134,
-          "tempo_minimo": 0.0015139579772949219,
-          "tempo_maximo": 0.003639698028564453,
-          "desvio_padrao": 0.0006523324075816836,
-          "throughput": 346.08753053006797
+          "tempo_total": 0.01534414291381836,
+          "tempo_medio": 0.0012200832366943359,
+          "tempo_minimo": 0.0008738040924072266,
+          "tempo_maximo": 0.0016903877258300781,
+          "desvio_padrao": 0.00024201437156854227,
+          "throughput": 651.7144721712918
         },
         {
           "ip": "37.92.0.10",
@@ -89,12 +89,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.01580643653869629,
-          "tempo_medio": 0.0012398719787597655,
-          "tempo_minimo": 0.0007786750793457031,
-          "tempo_maximo": 0.0019631385803222656,
-          "desvio_padrao": 0.00036179043651763006,
-          "throughput": 632.6536645700409
+          "tempo_total": 0.027150630950927734,
+          "tempo_medio": 0.002145266532897949,
+          "tempo_minimo": 0.00157928466796875,
+          "tempo_maximo": 0.0034520626068115234,
+          "desvio_padrao": 0.0005602097118671953,
+          "throughput": 368.31556578092346
         },
         {
           "ip": "37.92.0.10",
@@ -105,12 +105,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.025923967361450195,
-          "tempo_medio": 0.0020151376724243165,
-          "tempo_minimo": 0.0012426376342773438,
-          "tempo_maximo": 0.004446268081665039,
-          "desvio_padrao": 0.0009026350408356888,
-          "throughput": 385.74342655863444
+          "tempo_total": 0.02747368812561035,
+          "tempo_medio": 0.002236747741699219,
+          "tempo_minimo": 0.0012362003326416016,
+          "tempo_maximo": 0.003122568130493164,
+          "desvio_padrao": 0.0006183143567197264,
+          "throughput": 363.9846224605799
         },
         {
           "ip": "37.92.0.10",
@@ -121,12 +121,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.015386581420898438,
-          "tempo_medio": 0.0012372732162475586,
-          "tempo_minimo": 0.0006933212280273438,
-          "tempo_maximo": 0.002093076705932617,
-          "desvio_padrao": 0.00044494802694308516,
-          "throughput": 649.9169455807611
+          "tempo_total": 0.016502857208251953,
+          "tempo_medio": 0.0013716936111450196,
+          "tempo_minimo": 0.0011055469512939453,
+          "tempo_maximo": 0.0017170906066894531,
+          "desvio_padrao": 0.0002168935352680281,
+          "throughput": 605.9556762691785
         },
         {
           "ip": "37.92.0.10",
@@ -137,12 +137,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.012988567352294922,
-          "tempo_medio": 0.0010357141494750977,
-          "tempo_minimo": 0.0006706714630126953,
-          "tempo_maximo": 0.0016334056854248047,
-          "desvio_padrao": 0.0002706489385083802,
-          "throughput": 769.9078527111861
+          "tempo_total": 0.024157047271728516,
+          "tempo_medio": 0.0019345760345458984,
+          "tempo_minimo": 0.0011658668518066406,
+          "tempo_maximo": 0.003508329391479492,
+          "desvio_padrao": 0.000673654983056227,
+          "throughput": 413.95787686780756
         },
         {
           "ip": "37.92.0.10",
@@ -153,12 +153,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.022035837173461914,
-          "tempo_medio": 0.001796388626098633,
-          "tempo_minimo": 0.0014731884002685547,
-          "tempo_maximo": 0.0024750232696533203,
-          "desvio_padrao": 0.0003076989248512439,
-          "throughput": 453.8062212604815
+          "tempo_total": 0.022857189178466797,
+          "tempo_medio": 0.0017463207244873048,
+          "tempo_minimo": 0.00102996826171875,
+          "tempo_maximo": 0.004307985305786133,
+          "desvio_padrao": 0.000936459971758515,
+          "throughput": 437.49911338270573
         },
         {
           "ip": "37.92.0.10",
@@ -169,12 +169,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.022346019744873047,
-          "tempo_medio": 0.0016436338424682616,
-          "tempo_minimo": 0.0010752677917480469,
-          "tempo_maximo": 0.002899169921875,
-          "desvio_padrao": 0.0006442913647766337,
-          "throughput": 447.50698845571134
+          "tempo_total": 0.024347305297851562,
+          "tempo_medio": 0.001862955093383789,
+          "tempo_minimo": 0.0012316703796386719,
+          "tempo_maximo": 0.002482891082763672,
+          "desvio_padrao": 0.0005408716706966776,
+          "throughput": 410.7230708969839
         }
       ],
       "concorrente": [
@@ -187,12 +187,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.036902427673339844,
-          "tempo_medio": 0.003188467025756836,
-          "tempo_minimo": 0.0024602413177490234,
-          "tempo_maximo": 0.00479888916015625,
-          "desvio_padrao": 0.0009045545884164382,
-          "throughput": 270.98488176767023
+          "tempo_total": 0.03107142448425293,
+          "tempo_medio": 0.0027457475662231445,
+          "tempo_minimo": 0.0017733573913574219,
+          "tempo_maximo": 0.005446434020996094,
+          "desvio_padrao": 0.001095346977278665,
+          "throughput": 321.8391227949019
         },
         {
           "ip": "37.92.0.11",
@@ -203,12 +203,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.03865456581115723,
-          "tempo_medio": 0.003433966636657715,
-          "tempo_minimo": 0.0021278858184814453,
-          "tempo_maximo": 0.005939960479736328,
-          "desvio_padrao": 0.0012556881262143185,
-          "throughput": 258.70165115432775
+          "tempo_total": 0.03341197967529297,
+          "tempo_medio": 0.0029799699783325194,
+          "tempo_minimo": 0.002003908157348633,
+          "tempo_maximo": 0.0042498111724853516,
+          "desvio_padrao": 0.0007085098415577023,
+          "throughput": 299.2938490081347
         },
         {
           "ip": "37.92.0.11",
@@ -219,12 +219,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.027672529220581055,
-          "tempo_medio": 0.0023846864700317384,
-          "tempo_minimo": 0.00164794921875,
-          "tempo_maximo": 0.003119230270385742,
-          "desvio_padrao": 0.00053163185738747,
-          "throughput": 361.3692091636727
+          "tempo_total": 0.03038191795349121,
+          "tempo_medio": 0.0026878595352172853,
+          "tempo_minimo": 0.0019452571868896484,
+          "tempo_maximo": 0.004492521286010742,
+          "desvio_padrao": 0.0007464184827643801,
+          "throughput": 329.1431441329033
         },
         {
           "ip": "37.92.0.11",
@@ -235,12 +235,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.030327558517456055,
-          "tempo_medio": 0.002713632583618164,
-          "tempo_minimo": 0.0016870498657226562,
-          "tempo_maximo": 0.004311561584472656,
-          "desvio_padrao": 0.000755722719737657,
-          "throughput": 329.7331037789989
+          "tempo_total": 0.045890092849731445,
+          "tempo_medio": 0.004173803329467774,
+          "tempo_minimo": 0.0028018951416015625,
+          "tempo_maximo": 0.006596565246582031,
+          "desvio_padrao": 0.001381631393049331,
+          "throughput": 217.9119583119022
         },
         {
           "ip": "37.92.0.11",
@@ -251,12 +251,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.02445077896118164,
-          "tempo_medio": 0.0021675586700439452,
-          "tempo_minimo": 0.0016014575958251953,
-          "tempo_maximo": 0.0033168792724609375,
-          "desvio_padrao": 0.000546752045370829,
-          "throughput": 408.984925015114
+          "tempo_total": 0.021967649459838867,
+          "tempo_medio": 0.0019173860549926759,
+          "tempo_minimo": 0.0014774799346923828,
+          "tempo_maximo": 0.002622365951538086,
+          "desvio_padrao": 0.0004284581163123152,
+          "throughput": 455.2148384506018
         },
         {
           "ip": "37.92.0.11",
@@ -267,12 +267,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.023903608322143555,
-          "tempo_medio": 0.00208437442779541,
-          "tempo_minimo": 0.001905202865600586,
-          "tempo_maximo": 0.0023522377014160156,
-          "desvio_padrao": 0.00014249216689943856,
-          "throughput": 418.3468815767163
+          "tempo_total": 0.03472542762756348,
+          "tempo_medio": 0.002909994125366211,
+          "tempo_minimo": 0.002006053924560547,
+          "tempo_maximo": 0.0044286251068115234,
+          "desvio_padrao": 0.0006790243656095123,
+          "throughput": 287.97341554009984
         },
         {
           "ip": "37.92.0.11",
@@ -283,12 +283,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.02485346794128418,
-          "tempo_medio": 0.0022229909896850585,
-          "tempo_minimo": 0.0014529228210449219,
-          "tempo_maximo": 0.0038042068481445312,
-          "desvio_padrao": 0.0008033319540553952,
-          "throughput": 402.3583358115173
+          "tempo_total": 0.041490793228149414,
+          "tempo_medio": 0.0037611722946166992,
+          "tempo_minimo": 0.002366781234741211,
+          "tempo_maximo": 0.0050051212310791016,
+          "desvio_padrao": 0.0009466943632178768,
+          "throughput": 241.01732509696882
         },
         {
           "ip": "37.92.0.11",
@@ -299,12 +299,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.020984172821044922,
-          "tempo_medio": 0.0018409013748168946,
-          "tempo_minimo": 0.0014770030975341797,
-          "tempo_maximo": 0.002508401870727539,
-          "desvio_padrao": 0.0003387392843917171,
-          "throughput": 476.54963983002705
+          "tempo_total": 0.028447628021240234,
+          "tempo_medio": 0.00250096321105957,
+          "tempo_minimo": 0.0018756389617919922,
+          "tempo_maximo": 0.00341033935546875,
+          "desvio_padrao": 0.0005654373478180975,
+          "throughput": 351.52315660671485
         },
         {
           "ip": "37.92.0.11",
@@ -315,12 +315,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.030577421188354492,
-          "tempo_medio": 0.002714705467224121,
-          "tempo_minimo": 0.0021250247955322266,
-          "tempo_maximo": 0.003820180892944336,
-          "desvio_padrao": 0.0005697489632274336,
-          "throughput": 327.0386975540152
+          "tempo_total": 0.038278818130493164,
+          "tempo_medio": 0.003506636619567871,
+          "tempo_minimo": 0.002643108367919922,
+          "tempo_maximo": 0.005654096603393555,
+          "desvio_padrao": 0.0009618177650635098,
+          "throughput": 261.24108549824666
         },
         {
           "ip": "37.92.0.11",
@@ -331,12 +331,12 @@
           "sucessos": 10,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.031877756118774414,
-          "tempo_medio": 0.002760481834411621,
-          "tempo_minimo": 0.0015933513641357422,
-          "tempo_maximo": 0.004523515701293945,
-          "desvio_padrao": 0.0008385249635091614,
-          "throughput": 313.6983658053177
+          "tempo_total": 0.027997732162475586,
+          "tempo_medio": 0.0023998260498046876,
+          "tempo_minimo": 0.0017008781433105469,
+          "tempo_maximo": 0.0032176971435546875,
+          "desvio_padrao": 0.00047105400486659903,
+          "throughput": 357.1717859849614
         }
       ]
     },
@@ -351,12 +351,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.023442745208740234,
-          "tempo_medio": 0.0038192272186279297,
-          "tempo_minimo": 0.00205230712890625,
-          "tempo_maximo": 0.007666587829589844,
-          "desvio_padrao": 0.0018858206918179162,
-          "throughput": 853.1424038402864
+          "tempo_total": 0.028943538665771484,
+          "tempo_medio": 0.005383503437042236,
+          "tempo_minimo": 0.0028722286224365234,
+          "tempo_maximo": 0.011492490768432617,
+          "desvio_padrao": 0.001975181046776404,
+          "throughput": 691.0005107168157
         },
         {
           "ip": "37.92.0.10",
@@ -367,12 +367,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.027314186096191406,
-          "tempo_medio": 0.0049140691757202145,
-          "tempo_minimo": 0.003037691116333008,
-          "tempo_maximo": 0.008562564849853516,
-          "desvio_padrao": 0.001385599377068621,
-          "throughput": 732.2202437065745
+          "tempo_total": 0.020562171936035156,
+          "tempo_medio": 0.0038232684135437013,
+          "tempo_minimo": 0.0017063617706298828,
+          "tempo_maximo": 0.00716400146484375,
+          "desvio_padrao": 0.0018636378513611736,
+          "throughput": 972.659895181114
         },
         {
           "ip": "37.92.0.10",
@@ -383,12 +383,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.025339126586914062,
-          "tempo_medio": 0.00455559492111206,
-          "tempo_minimo": 0.0025959014892578125,
-          "tempo_maximo": 0.007104396820068359,
-          "desvio_padrao": 0.0012220479259507345,
-          "throughput": 789.293187805796
+          "tempo_total": 0.0349268913269043,
+          "tempo_medio": 0.006651246547698974,
+          "tempo_minimo": 0.0040132999420166016,
+          "tempo_maximo": 0.008661508560180664,
+          "desvio_padrao": 0.0012520049998070045,
+          "throughput": 572.624680874302
         },
         {
           "ip": "37.92.0.10",
@@ -399,12 +399,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.03579211235046387,
-          "tempo_medio": 0.006782674789428711,
-          "tempo_minimo": 0.004162788391113281,
-          "tempo_maximo": 0.01136159896850586,
-          "desvio_padrao": 0.0018369040715699868,
-          "throughput": 558.78233182124
+          "tempo_total": 0.024097442626953125,
+          "tempo_medio": 0.004422295093536377,
+          "tempo_minimo": 0.0016040802001953125,
+          "tempo_maximo": 0.0088348388671875,
+          "desvio_padrao": 0.0019158666984919965,
+          "throughput": 829.9635903118569
         },
         {
           "ip": "37.92.0.10",
@@ -415,12 +415,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.04292011260986328,
-          "tempo_medio": 0.007959604263305664,
-          "tempo_minimo": 0.004590511322021484,
-          "tempo_maximo": 0.010457992553710938,
-          "desvio_padrao": 0.0018523618121060416,
-          "throughput": 465.9820019997778
+          "tempo_total": 0.030491352081298828,
+          "tempo_medio": 0.005805325508117676,
+          "tempo_minimo": 0.0037114620208740234,
+          "tempo_maximo": 0.008980274200439453,
+          "desvio_padrao": 0.0014568050377335346,
+          "throughput": 655.9236844162953
         },
         {
           "ip": "37.92.0.10",
@@ -431,12 +431,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.033977508544921875,
-          "tempo_medio": 0.0061894416809082035,
-          "tempo_minimo": 0.003958463668823242,
-          "tempo_maximo": 0.010715484619140625,
-          "desvio_padrao": 0.001944954246467917,
-          "throughput": 588.6246772201639
+          "tempo_total": 0.016322851181030273,
+          "tempo_medio": 0.002936279773712158,
+          "tempo_minimo": 0.0015788078308105469,
+          "tempo_maximo": 0.005258083343505859,
+          "desvio_padrao": 0.0011539345211059586,
+          "throughput": 1225.2761345544309
         },
         {
           "ip": "37.92.0.10",
@@ -447,12 +447,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.04886031150817871,
-          "tempo_medio": 0.008106815814971923,
-          "tempo_minimo": 0.0015075206756591797,
-          "tempo_maximo": 0.023236751556396484,
-          "desvio_padrao": 0.005405769992266672,
-          "throughput": 409.3301778612731
+          "tempo_total": 0.017165422439575195,
+          "tempo_medio": 0.0030329585075378417,
+          "tempo_minimo": 0.0017039775848388672,
+          "tempo_maximo": 0.006575822830200195,
+          "desvio_padrao": 0.0014299464161212627,
+          "throughput": 1165.13299165243
         },
         {
           "ip": "37.92.0.10",
@@ -463,12 +463,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.037905216217041016,
-          "tempo_medio": 0.007215368747711182,
-          "tempo_minimo": 0.0018508434295654297,
-          "tempo_maximo": 0.017406463623046875,
-          "desvio_padrao": 0.004370763096557486,
-          "throughput": 527.631866956839
+          "tempo_total": 0.08682608604431152,
+          "tempo_medio": 0.016526854038238524,
+          "tempo_minimo": 0.0033462047576904297,
+          "tempo_maximo": 0.04061746597290039,
+          "desvio_padrao": 0.01197126477507325,
+          "throughput": 230.34552069746687
         },
         {
           "ip": "37.92.0.10",
@@ -479,12 +479,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.03818106651306152,
-          "tempo_medio": 0.00709458589553833,
-          "tempo_minimo": 0.004557371139526367,
-          "tempo_maximo": 0.010648012161254883,
-          "desvio_padrao": 0.0019063959538813179,
-          "throughput": 523.8198360215557
+          "tempo_total": 0.031236648559570312,
+          "tempo_medio": 0.005591166019439697,
+          "tempo_minimo": 0.003190755844116211,
+          "tempo_maximo": 0.009885311126708984,
+          "desvio_padrao": 0.0019480931190892286,
+          "throughput": 640.2735543750382
         },
         {
           "ip": "37.92.0.10",
@@ -495,12 +495,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.06719207763671875,
-          "tempo_medio": 0.011200666427612305,
-          "tempo_minimo": 0.0035011768341064453,
-          "tempo_maximo": 0.03250432014465332,
-          "desvio_padrao": 0.00841790151479066,
-          "throughput": 297.6541387532645
+          "tempo_total": 0.026536941528320312,
+          "tempo_medio": 0.004717326164245606,
+          "tempo_minimo": 0.0008454322814941406,
+          "tempo_maximo": 0.010327577590942383,
+          "desvio_padrao": 0.0021746048475144745,
+          "throughput": 753.66635520736
         }
       ],
       "concorrente": [
@@ -513,12 +513,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.05864882469177246,
-          "tempo_medio": 0.01213376522064209,
-          "tempo_minimo": 0.006723642349243164,
-          "tempo_maximo": 0.016181230545043945,
-          "desvio_padrao": 0.0023885593355785707,
-          "throughput": 341.0128012813477
+          "tempo_total": 0.05042386054992676,
+          "tempo_medio": 0.010580730438232423,
+          "tempo_minimo": 0.0045318603515625,
+          "tempo_maximo": 0.018505573272705078,
+          "desvio_padrao": 0.003304967556597114,
+          "throughput": 396.63761921198335
         },
         {
           "ip": "37.92.0.11",
@@ -529,12 +529,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.06081509590148926,
-          "tempo_medio": 0.012309515476226806,
-          "tempo_minimo": 0.0059587955474853516,
-          "tempo_maximo": 0.01895880699157715,
-          "desvio_padrao": 0.0036176577633776417,
-          "throughput": 328.8657150585901
+          "tempo_total": 0.04208540916442871,
+          "tempo_medio": 0.008638536930084229,
+          "tempo_minimo": 0.0040569305419921875,
+          "tempo_maximo": 0.011988639831542969,
+          "desvio_padrao": 0.0017761682796291845,
+          "throughput": 475.22408352641924
         },
         {
           "ip": "37.92.0.11",
@@ -545,12 +545,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.03053593635559082,
-          "tempo_medio": 0.006284046173095703,
-          "tempo_minimo": 0.0032575130462646484,
-          "tempo_maximo": 0.008697509765625,
-          "desvio_padrao": 0.0015166166936830827,
-          "throughput": 654.9659970174192
+          "tempo_total": 0.04979205131530762,
+          "tempo_medio": 0.01080935001373291,
+          "tempo_minimo": 0.004957914352416992,
+          "tempo_maximo": 0.01922440528869629,
+          "desvio_padrao": 0.00411096073746924,
+          "throughput": 401.6705371977993
         },
         {
           "ip": "37.92.0.11",
@@ -561,12 +561,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.06893253326416016,
-          "tempo_medio": 0.01449587345123291,
-          "tempo_minimo": 0.008557319641113281,
-          "tempo_maximo": 0.022792577743530273,
-          "desvio_padrao": 0.0036521220593582764,
-          "throughput": 290.1387639905369
+          "tempo_total": 0.05466914176940918,
+          "tempo_medio": 0.011401164531707763,
+          "tempo_minimo": 0.008004426956176758,
+          "tempo_maximo": 0.017978191375732422,
+          "desvio_padrao": 0.0023862273152560677,
+          "throughput": 365.83709479762234
         },
         {
           "ip": "37.92.0.11",
@@ -577,12 +577,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.04383516311645508,
-          "tempo_medio": 0.00904533863067627,
-          "tempo_minimo": 0.00508880615234375,
-          "tempo_maximo": 0.012362480163574219,
-          "desvio_padrao": 0.0019810625860246663,
-          "throughput": 456.2547183152215
+          "tempo_total": 0.04444766044616699,
+          "tempo_medio": 0.009013879299163818,
+          "tempo_minimo": 0.005899190902709961,
+          "tempo_maximo": 0.011896371841430664,
+          "desvio_padrao": 0.001961360124071487,
+          "throughput": 449.96744033857755
         },
         {
           "ip": "37.92.0.11",
@@ -593,12 +593,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.057895660400390625,
-          "tempo_medio": 0.012468075752258301,
-          "tempo_minimo": 0.005381584167480469,
-          "tempo_maximo": 0.01802539825439453,
-          "desvio_padrao": 0.004083202011758383,
-          "throughput": 345.44903472359493
+          "tempo_total": 0.04343247413635254,
+          "tempo_medio": 0.008047091960906982,
+          "tempo_minimo": 0.004690647125244141,
+          "tempo_maximo": 0.01132512092590332,
+          "desvio_padrao": 0.0017245404701681673,
+          "throughput": 460.48493431923106
         },
         {
           "ip": "37.92.0.11",
@@ -609,12 +609,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.045552730560302734,
-          "tempo_medio": 0.009027910232543946,
-          "tempo_minimo": 0.005534172058105469,
-          "tempo_maximo": 0.012339115142822266,
-          "desvio_padrao": 0.0018450673192678855,
-          "throughput": 439.05161675267715
+          "tempo_total": 0.040495872497558594,
+          "tempo_medio": 0.008258676528930664,
+          "tempo_minimo": 0.0034956932067871094,
+          "tempo_maximo": 0.011839866638183594,
+          "desvio_padrao": 0.0024934662888109567,
+          "throughput": 493.87749334714925
         },
         {
           "ip": "37.92.0.11",
@@ -625,12 +625,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.043328046798706055,
-          "tempo_medio": 0.008961868286132813,
-          "tempo_minimo": 0.0060346126556396484,
-          "tempo_maximo": 0.012241125106811523,
-          "desvio_padrao": 0.0016182365148093803,
-          "throughput": 461.59477469446597
+          "tempo_total": 0.03768444061279297,
+          "tempo_medio": 0.00757756233215332,
+          "tempo_minimo": 0.0057294368743896484,
+          "tempo_maximo": 0.009835958480834961,
+          "desvio_padrao": 0.0011621287458455816,
+          "throughput": 530.7230165759838
         },
         {
           "ip": "37.92.0.11",
@@ -641,12 +641,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.045958757400512695,
-          "tempo_medio": 0.009725701808929444,
-          "tempo_minimo": 0.003297567367553711,
-          "tempo_maximo": 0.012433767318725586,
-          "desvio_padrao": 0.0021973062862150378,
-          "throughput": 435.1727751407154
+          "tempo_total": 0.04254651069641113,
+          "tempo_medio": 0.008609211444854737,
+          "tempo_minimo": 0.0053484439849853516,
+          "tempo_maximo": 0.013141393661499023,
+          "desvio_padrao": 0.0025158401609148106,
+          "throughput": 470.07380094478657
         },
         {
           "ip": "37.92.0.11",
@@ -657,12 +657,12 @@
           "sucessos": 20,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.04102206230163574,
-          "tempo_medio": 0.008177196979522705,
-          "tempo_minimo": 0.006214618682861328,
-          "tempo_maximo": 0.010692119598388672,
-          "desvio_padrao": 0.0012613450652388348,
-          "throughput": 487.5425290162095
+          "tempo_total": 0.040400028228759766,
+          "tempo_medio": 0.007865190505981445,
+          "tempo_minimo": 0.0035877227783203125,
+          "tempo_maximo": 0.011883020401000977,
+          "desvio_padrao": 0.002080093393748595,
+          "throughput": 495.04915904396574
         }
       ]
     },
@@ -677,12 +677,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 1.058966875076294,
-          "tempo_medio": 0.11314671834309896,
-          "tempo_minimo": 0.0008025169372558594,
-          "tempo_maximo": 1.0280323028564453,
-          "desvio_padrao": 0.30774941891304136,
-          "throughput": 28.329498028763773
+          "tempo_total": 1.0440113544464111,
+          "tempo_medio": 0.04275814692179362,
+          "tempo_minimo": 0.0020608901977539062,
+          "tempo_maximo": 1.0233430862426758,
+          "desvio_padrao": 0.18523351434873395,
+          "throughput": 28.73531966125747
         },
         {
           "ip": "37.92.0.10",
@@ -693,12 +693,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 1.0381951332092285,
-          "tempo_medio": 0.10782592296600342,
-          "tempo_minimo": 0.0017354488372802734,
-          "tempo_maximo": 1.0113639831542969,
-          "desvio_padrao": 0.30572458695570665,
-          "throughput": 28.89630189968736
+          "tempo_total": 1.038116455078125,
+          "tempo_medio": 0.10855144659678141,
+          "tempo_minimo": 0.0034079551696777344,
+          "tempo_maximo": 1.0129477977752686,
+          "desvio_padrao": 0.30551310322000985,
+          "throughput": 28.898491930505337
         },
         {
           "ip": "37.92.0.10",
@@ -709,12 +709,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.0375211238861084,
-          "tempo_medio": 0.00744178295135498,
-          "tempo_minimo": 0.002946138381958008,
-          "tempo_maximo": 0.015964508056640625,
-          "desvio_padrao": 0.0029992649190182146,
-          "throughput": 799.549610802224
+          "tempo_total": 1.0638375282287598,
+          "tempo_medio": 0.11898683706919352,
+          "tempo_minimo": 0.0013577938079833984,
+          "tempo_maximo": 1.0267574787139893,
+          "desvio_padrao": 0.3050375875305335,
+          "throughput": 28.199794803205158
         },
         {
           "ip": "37.92.0.10",
@@ -725,12 +725,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 1.067007064819336,
-          "tempo_medio": 0.11209856669108073,
-          "tempo_minimo": 0.0007081031799316406,
-          "tempo_maximo": 1.0325541496276855,
-          "desvio_padrao": 0.3091750776757937,
-          "throughput": 28.116027521410608
+          "tempo_total": 0.05009818077087402,
+          "tempo_medio": 0.011707743008931478,
+          "tempo_minimo": 0.003569364547729492,
+          "tempo_maximo": 0.018529415130615234,
+          "desvio_padrao": 0.003859000871658298,
+          "throughput": 598.8241396869512
         },
         {
           "ip": "37.92.0.10",
@@ -741,12 +741,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 1.0670928955078125,
-          "tempo_medio": 0.07830996513366699,
-          "tempo_minimo": 0.0010814666748046875,
-          "tempo_maximo": 1.0328142642974854,
-          "desvio_padrao": 0.2591706282522288,
-          "throughput": 28.11376603320321
+          "tempo_total": 1.0538511276245117,
+          "tempo_medio": 0.07604565620422363,
+          "tempo_minimo": 0.0010561943054199219,
+          "tempo_maximo": 1.0275688171386719,
+          "desvio_padrao": 0.25861195951579025,
+          "throughput": 28.467018930485057
         },
         {
           "ip": "37.92.0.10",
@@ -757,12 +757,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 1.0370604991912842,
-          "tempo_medio": 0.10751759211222331,
-          "tempo_minimo": 0.0012247562408447266,
-          "tempo_maximo": 1.008171796798706,
-          "desvio_padrao": 0.30477373815801156,
-          "throughput": 28.927916957009224
+          "tempo_total": 1.036710262298584,
+          "tempo_medio": 0.04288143316904704,
+          "tempo_minimo": 0.0018320083618164062,
+          "tempo_maximo": 1.0143351554870605,
+          "desvio_padrao": 0.18354195643166463,
+          "throughput": 28.93768981652047
         },
         {
           "ip": "37.92.0.10",
@@ -773,12 +773,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 1.0629088878631592,
-          "tempo_medio": 0.11080490748087565,
-          "tempo_minimo": 0.0017020702362060547,
-          "tempo_maximo": 1.0337505340576172,
-          "desvio_padrao": 0.3126077534179117,
-          "throughput": 28.224432350275215
+          "tempo_total": 1.060734748840332,
+          "tempo_medio": 0.04524392286936442,
+          "tempo_minimo": 0.004907846450805664,
+          "tempo_maximo": 1.0265247821807861,
+          "desvio_padrao": 0.18537691996465766,
+          "throughput": 28.2822826656693
         },
         {
           "ip": "37.92.0.10",
@@ -789,12 +789,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.037802696228027344,
-          "tempo_medio": 0.008511940638224283,
-          "tempo_minimo": 0.002939462661743164,
-          "tempo_maximo": 0.013705968856811523,
-          "desvio_padrao": 0.0022722641506317,
-          "throughput": 793.5941875425717
+          "tempo_total": 0.04017949104309082,
+          "tempo_medio": 0.007257477442423502,
+          "tempo_minimo": 0.002099752426147461,
+          "tempo_maximo": 0.01608133316040039,
+          "desvio_padrao": 0.0040763083633999645,
+          "throughput": 746.6495772140632
         },
         {
           "ip": "37.92.0.10",
@@ -805,12 +805,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.042130231857299805,
-          "tempo_medio": 0.008995143572489421,
-          "tempo_minimo": 0.003078460693359375,
-          "tempo_maximo": 0.014040470123291016,
-          "desvio_padrao": 0.0026314749303040998,
-          "throughput": 712.0777331967607
+          "tempo_total": 1.0394020080566406,
+          "tempo_medio": 0.07637808322906495,
+          "tempo_minimo": 0.0007920265197753906,
+          "tempo_maximo": 1.0193321704864502,
+          "desvio_padrao": 0.25624024107101634,
+          "throughput": 28.86274970364036
         },
         {
           "ip": "37.92.0.10",
@@ -821,12 +821,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.04794049263000488,
-          "tempo_medio": 0.011315131187438964,
-          "tempo_minimo": 0.0040013790130615234,
-          "tempo_maximo": 0.017557621002197266,
-          "desvio_padrao": 0.0032936499683225732,
-          "throughput": 625.7757973313705
+          "tempo_total": 1.057237148284912,
+          "tempo_medio": 0.10980312029520671,
+          "tempo_minimo": 0.0014252662658691406,
+          "tempo_maximo": 1.0119802951812744,
+          "desvio_padrao": 0.3052776195444902,
+          "throughput": 28.3758474138627
         }
       ],
       "concorrente": [
@@ -839,12 +839,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.05318164825439453,
-          "tempo_medio": 0.012113801638285319,
-          "tempo_minimo": 0.0060689449310302734,
-          "tempo_maximo": 0.018266677856445312,
-          "desvio_padrao": 0.0027766972358035046,
-          "throughput": 564.1043665381512
+          "tempo_total": 0.0976109504699707,
+          "tempo_medio": 0.022197818756103514,
+          "tempo_minimo": 0.007504463195800781,
+          "tempo_maximo": 0.034230709075927734,
+          "desvio_padrao": 0.006579928725415451,
+          "throughput": 307.3425661317506
         },
         {
           "ip": "37.92.0.11",
@@ -855,12 +855,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.058525800704956055,
-          "tempo_medio": 0.01155560811360677,
-          "tempo_minimo": 0.0039098262786865234,
-          "tempo_maximo": 0.02151799201965332,
-          "desvio_padrao": 0.004074827684133223,
-          "throughput": 512.5944393522763
+          "tempo_total": 0.07097148895263672,
+          "tempo_medio": 0.015539741516113282,
+          "tempo_minimo": 0.005492210388183594,
+          "tempo_maximo": 0.021160602569580078,
+          "desvio_padrao": 0.004755674847578986,
+          "throughput": 422.70495437992986
         },
         {
           "ip": "37.92.0.11",
@@ -871,12 +871,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.06528997421264648,
-          "tempo_medio": 0.014503892262776692,
-          "tempo_minimo": 0.0073850154876708984,
-          "tempo_maximo": 0.023513078689575195,
-          "desvio_padrao": 0.003769262163854153,
-          "throughput": 459.48861769023466
+          "tempo_total": 0.07593107223510742,
+          "tempo_medio": 0.018307876586914063,
+          "tempo_minimo": 0.0074117183685302734,
+          "tempo_maximo": 0.027259349822998047,
+          "desvio_padrao": 0.005601062425323954,
+          "throughput": 395.09517140901414
         },
         {
           "ip": "37.92.0.11",
@@ -887,12 +887,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.05770087242126465,
-          "tempo_medio": 0.013350097338358562,
-          "tempo_minimo": 0.005688905715942383,
-          "tempo_maximo": 0.022114038467407227,
-          "desvio_padrao": 0.0036502646101477646,
-          "throughput": 519.9228147015681
+          "tempo_total": 0.07224464416503906,
+          "tempo_medio": 0.016236639022827147,
+          "tempo_minimo": 0.004471778869628906,
+          "tempo_maximo": 0.023684263229370117,
+          "desvio_padrao": 0.0054907542711500204,
+          "throughput": 415.25569606885443
         },
         {
           "ip": "37.92.0.11",
@@ -903,12 +903,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.08144092559814453,
-          "tempo_medio": 0.015666739145914713,
-          "tempo_minimo": 0.0062906742095947266,
-          "tempo_maximo": 0.032175302505493164,
-          "desvio_padrao": 0.005375478724735002,
-          "throughput": 368.3651650526365
+          "tempo_total": 0.06038999557495117,
+          "tempo_medio": 0.013746023178100586,
+          "tempo_minimo": 0.005492210388183594,
+          "tempo_maximo": 0.022286415100097656,
+          "desvio_padrao": 0.004121326004051695,
+          "throughput": 496.7710249749303
         },
         {
           "ip": "37.92.0.11",
@@ -919,12 +919,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.05579090118408203,
-          "tempo_medio": 0.010999862353007,
-          "tempo_minimo": 0.003264188766479492,
-          "tempo_maximo": 0.01587653160095215,
-          "desvio_padrao": 0.0026880686079038926,
-          "throughput": 537.72209022068
+          "tempo_total": 0.06648612022399902,
+          "tempo_medio": 0.014354077974955241,
+          "tempo_minimo": 0.004580020904541016,
+          "tempo_maximo": 0.02205681800842285,
+          "desvio_padrao": 0.004166844297883189,
+          "throughput": 451.2219978986097
         },
         {
           "ip": "37.92.0.11",
@@ -935,12 +935,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.0982506275177002,
-          "tempo_medio": 0.019426616032918294,
-          "tempo_minimo": 0.008481740951538086,
-          "tempo_maximo": 0.0375363826751709,
-          "desvio_padrao": 0.007996045520832856,
-          "throughput": 305.34156124952375
+          "tempo_total": 0.06586480140686035,
+          "tempo_medio": 0.014632145563761393,
+          "tempo_minimo": 0.003805398941040039,
+          "tempo_maximo": 0.02164936065673828,
+          "desvio_padrao": 0.004253127571927743,
+          "throughput": 455.47848561303425
         },
         {
           "ip": "37.92.0.11",
@@ -951,12 +951,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.1372842788696289,
-          "tempo_medio": 0.021773878733317056,
-          "tempo_minimo": 0.007983207702636719,
-          "tempo_maximo": 0.03584551811218262,
-          "desvio_padrao": 0.007163331227057997,
-          "throughput": 218.52465735344174
+          "tempo_total": 0.07935762405395508,
+          "tempo_medio": 0.01769542694091797,
+          "tempo_minimo": 0.010926008224487305,
+          "tempo_maximo": 0.023667335510253906,
+          "desvio_padrao": 0.003351591462206122,
+          "throughput": 378.03551149166293
         },
         {
           "ip": "37.92.0.11",
@@ -967,12 +967,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.08386683464050293,
-          "tempo_medio": 0.01613741715749105,
-          "tempo_minimo": 0.004617452621459961,
-          "tempo_maximo": 0.0247955322265625,
-          "desvio_padrao": 0.00421306877394484,
-          "throughput": 357.7099353826298
+          "tempo_total": 0.05804181098937988,
+          "tempo_medio": 0.013472636540730795,
+          "tempo_minimo": 0.004243373870849609,
+          "tempo_maximo": 0.01844024658203125,
+          "desvio_padrao": 0.0032454491034948226,
+          "throughput": 516.8687793957567
         },
         {
           "ip": "37.92.0.11",
@@ -983,12 +983,12 @@
           "sucessos": 30,
           "falhas": 0,
           "taxa_sucesso": 100.0,
-          "tempo_total": 0.05990719795227051,
-          "tempo_medio": 0.014392574628194174,
-          "tempo_minimo": 0.007566928863525391,
-          "tempo_maximo": 0.0217440128326416,
-          "desvio_padrao": 0.003731134275683509,
-          "throughput": 500.7745483923604
+          "tempo_total": 0.06142258644104004,
+          "tempo_medio": 0.014661558469136556,
+          "tempo_minimo": 0.005388736724853516,
+          "tempo_maximo": 0.021468639373779297,
+          "desvio_padrao": 0.003803958111528545,
+          "throughput": 488.41967976710333
         }
       ]
     }

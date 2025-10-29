@@ -8,7 +8,7 @@ class ServidorSequencial:
     def __init__(self, host='37.92.0.10', porta=80):
         self.host = host # Define o IP do servidor
         self.porta = porta # Define a porta como 80 (no caso igual ao valor do argumento da variável porta)
-        self.id_personalizado = self.calcular_id_personalizado() # calcula o X-Custom pedido
+        self.id_personalizado = self.calcular_id_personalizado() # X-Custom que foi pedido na atividade
         self.contador_requisicoes = 0
 
     '''Aqui é onde é calculado o X-Custom'''
@@ -46,6 +46,7 @@ class ServidorSequencial:
                     
                 if achou_vazio:
                     corpo += linha_atual
+                
                 else:
                     if ':' in linha_atual:
                         partes = linha_atual.split(':', 1)
@@ -126,6 +127,7 @@ class ServidorSequencial:
                 "request_count": self.contador_requisicoes,
                 "protocol": "TCP/Socket"
             }
+
             return self.criar_resposta_http(200, json.dumps(info, indent=2), "application/json")
             
         elif caminho == '/status':
@@ -178,7 +180,7 @@ class ServidorSequencial:
         else:
             return self.criar_resposta_http(404, "<h1>404 - Endpoint POST não encontrado</h1>")
     
-    '''Aqui ele decide qual a metodo de processamento irá utilizar. No caso dos testes. Usamos apenas o get e o post'''
+    '''Aqui ele faz o processamanto em si, apenas decide qual a metodo de processamento irá utilizar. No caso dos testes, utilizamos apenas o get e o post'''
     def processar_requisicao(self, socket_cliente, endereco_cliente):
         try:
             dados_requisicao = b""
@@ -188,7 +190,9 @@ class ServidorSequencial:
                 pedaco = socket_cliente.recv(1024)
                 if not pedaco:
                     break
+                
                 dados_requisicao += pedaco
+
                 if b'\r\n\r\n' in dados_requisicao:
                     break
             
@@ -204,7 +208,7 @@ class ServidorSequencial:
                 resposta = self.processar_requisicao_get(caminho, cabecalhos)
             elif metodo == 'POST':
                 resposta = self.processar_requisicao_post(caminho, cabecalhos, corpo)
-            elif metodo == 'HEAD':
+            elif metodo == 'HEAD': # Não utilizei esse metodo nos testes. Foram utilizados apenas o GET e o POST
                 if caminho == '/':
                     conteudo = ""
                     resposta = self.criar_resposta_http(200, conteudo, "text/html")
@@ -226,17 +230,20 @@ class ServidorSequencial:
     
     def iniciar(self):
         socket_servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+         # Permite que o socket reutilize imediatamente o mesmo endereço (IP + porta) após o programa ser fechado, evitando erro de "endereço já em uso".
         socket_servidor.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        socket_servidor.bind((self.host, self.porta))
+
+        socket_servidor.bind((self.host, self.porta)) # interliga o host com porta
         socket_servidor.listen(5)
         
         print("=" * 70)
-        print("SERVIDOR SEQUENCIAL - SOCKETS BRUTOS")
+        print("SERVIDOR SEQUENCIAL - SOCKETS BRUTO")
         print("=" * 70)
         print(f"Servidor: {self.host}:{self.porta}")
         print(f"X-Custom-ID: {self.id_personalizado}")
-        print(f"Matrícula: 20229043792")
-        print(f"Nome: Victor Rodrigues Luz")
+        print(f"Matrcula: 20229043792")
+        print(f"Meu Nome: Victor Rodrigues Luz")
         print("Endpoints: GET /, /info, /status, /health")
         print("Endpoints: POST /api/data, /api/echo")
         print("Pressione Ctrl + C para encerrar")
@@ -245,14 +252,14 @@ class ServidorSequencial:
         try:
             while True:
                 socket_cliente, endereco_cliente = socket_servidor.accept()
-                print(f"\n[Sequencial] Conexão aceita: {endereco_cliente}")
+                print(f"\n[Sequencial] Conexao foi aceita: {endereco_cliente}")
                 self.processar_requisicao(socket_cliente, endereco_cliente)
-                print(f"[Sequencial] Requisição concluída: {endereco_cliente}")
+                print(f"[Sequencial] Requisicao foi concluida: {endereco_cliente}")
                 
         except KeyboardInterrupt:
             print("\n[Sequencial] Encerrando servidor...")
         except Exception as e:
-            print(f"\n[Sequencial] Erro: {e}")
+            print(f"\n[Sequencial]Erro: {e}")
         finally:
             socket_servidor.close()
 

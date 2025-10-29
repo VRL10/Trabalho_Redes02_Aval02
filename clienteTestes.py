@@ -176,7 +176,7 @@ Connection: close\r
     
     def gerar_relatorio_comparativo_servidores(self, resultados):
         print("\n" + "=" * 70)
-        print("RELATÓRIO COMPARATIVO - SERVIDORES SEQUENCIAL vs CONCORRENTE")
+        print("RELAToRIO COMPARATIVO - SERVIDORES SEQUENCIAL vs CONCORRENTE")
         print("=" * 70)
         
         for cenario_nome, cenario in resultados['cenarios'].items():
@@ -188,18 +188,18 @@ Connection: close\r
                 sucesso_medio = statistics.mean([r['taxa_sucesso'] for r in servidor])
                 consistencia = statistics.mean([r['desvio_padrao'] for r in servidor])
                 
-                print(f"  {servidor_nome.upper():<12} | Throughput: {throughput_medio:6.1f} req/s")
-                print(f"  {'':<12} | Tempo Médio: {tempos_medio:6.3f}s")
-                print(f"  {'':<12} | Sucesso: {sucesso_medio:6.1f}%")
-                print(f"  {'':<12} | Consistência: {consistencia:6.4f}s")
+                print(f"  {servidor_nome.upper()} | Throughput: {throughput_medio:6.1f} req/s")
+                print(f"  | Tempo medio: {tempos_medio:6.3f}s")
+                print(f"  | Sucesso: {sucesso_medio:6.1f}%")
+                print(f"  | Consistencia: {consistencia:6.4f}s")
 
 if __name__ == "__main__":
     cliente = ClienteTestesServidores()
     resultados = cliente.executar_suite_comparativa_servidores(num_execucoes=10)
     
     print("\n" + "=" * 70)
-    print(" SUITE DE TESTES CONCLUÍDA!")
+    print(" SUITE DE TESTES concluida!")
     print("=" * 70)
-    print("Resultados salvos em: resultados/metricas_completas.json")
-    print("Análise focada na comparação: Servidor Sequencial vs Concorrente")
+    print("Resultados salvs em: resultados/metricas_completas.json")
+    print("Analise focada na comparacao: Servidor Sequencial vs Concorrente")
     print("=" * 70)

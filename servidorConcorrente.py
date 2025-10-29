@@ -11,13 +11,15 @@ class ServidorConcorrente:
         self.porta = porta
         self.id_personalizado = self.calcular_id_personalizado()
         self.contador_requisicoes = 0
-        self.lock_contador = threading.Lock()
-        self.semaphore = threading.Semaphore(50)
+
+        self.lock_contador = threading.Lock() # Trava
+        self.semaphore = threading.Semaphore(50) # Limita para 50 thrends
         
     def calcular_id_personalizado(self):
         matricula = "20229043792"
         nome = "Victor Rodrigues Luz"
         dados = f"{matricula} {nome}"
+        
         return hashlib.md5(dados.encode()).hexdigest()
     
     def analisar_requisicao_http(self, dados):
@@ -182,7 +184,7 @@ class ServidorConcorrente:
                 "thread": threading.current_thread().name,
                 "custom_id": self.id_personalizado
             }
-            return self.criar_resposta_http(200, json.dumps(dados_resposta, indent=2), "application/json")
+            return self.criar_resposta_http(200, json.dumps(dados_resposta,indent=2), "application/json")
             
         elif caminho == '/api/echo':
             resposta_echo = {
@@ -227,7 +229,7 @@ class ServidorConcorrente:
                 if not dados_requisicao:
                     return
                 
-                texto_requisicao = dados_requisicao.decode('utf-8', errors='ignore')
+                texto_requisicao = dados_requisicao.decode('utf-8',errors='ignore')
                 metodo, caminho, cabecalhos, corpo = self.analisar_requisicao_http(texto_requisicao)
                 
                 print(f"[{nome_thread}] {endereco_cliente} - {metodo} {caminho}")
@@ -259,7 +261,7 @@ class ServidorConcorrente:
                 print(f"[{nome_thread}] Erro: {e}")
             finally:
                 socket_cliente.close()
-                print(f"[{nome_thread}] Conexão fechada: {endereco_cliente}")
+                print(f"[{nome_thread}] Conexao fechada: {endereco_cliente}")
     
     def iniciar(self):
         socket_servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -272,17 +274,17 @@ class ServidorConcorrente:
         print("=" * 70)
         print(f"Servidor: {self.host}:{self.porta}")
         print(f"X-Custom-ID: {self.id_personalizado}")
-        print(f"Matrícula: 20229043792")
+        print(f"MATRicula: 20229043792")
         print(f"Nome: Victor Rodrigues Luz")
         print("Endpoints: GET /, /info, /status, /heavy, /health")
         print("Endpoints: POST /api/data, /api/echo, /api/batch")
-        print("Pressione Ctrl+C para encerrar")
+        print("Digite Ctrl+C para encerrar")
         print("=" * 70)
         
         try:
             while True:
                 socket_cliente, endereco_cliente = socket_servidor.accept()
-                print(f"\n[Main] Conexão aceita: {endereco_cliente}")
+                print(f"\n[Main] Conexao aceita: {endereco_cliente}")
                 
                 thread_cliente = threading.Thread(
                     target=self.processar_cliente,

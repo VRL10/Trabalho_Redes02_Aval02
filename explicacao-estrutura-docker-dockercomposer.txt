@@ -1,0 +1,80 @@
+🐳 DOCKERFILE - A "RECEITA" DO CONTAINER
+📝 Explicação simples:
+
+"O Dockerfile é como uma receita que ensina como montar nosso ambiente. Ele parte de um Ubuntu limpinho e vai adicionando tudo que precisamos."
+
+🔍 Ponto a ponto (mostrando o código): FROM ubuntu:22.04
+"Começamos com um Ubuntu limpo - nossa base":
+FROM ubuntu:22.04
+
+"Depois, instamos as ferramentas: Python para os servidores, CURL para testes de rede, net-tools para diagnóstico":
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    curl \
+    net-tools
+
+"Em seguida, criamos um ambiente Python isolado - como uma 'bolha' protegida para nossas dependências":
+RUN python3 -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH
+
+"Instalamos as bibliotecas para gerar gráficos e análises depois":
+RUN pip install matplotlib numpy seaborn pandas
+
+"E dizemos: quando o container ligar, rode o servidor sequencial":
+CMD ["python3", "servidorSequencial.py"]
+
+
+🐳 DOCKER COMPOSE - O "coordenador"
+📝 Explicação simples:
+
+"Se o Dockerfile é a receita, o Docker Compose é o chef que coordena todos os serviços ao mesmo tempo. Ele gerencia 4 serviços que conversam entre si."
+🔍 Ponto a ponto (mostrando o código):
+"Servidor sequencial no IP 37.92.0.10 - IP fixo para testes consistentes":
+services:
+  servidor-sequencial:
+    networks:
+      rede_trabalho:
+        ipv4_address: 37.92.0.10
+
+
+"Servidor concorrente no 37.92.0.11 - mesma rede, IP diferente":
+  servidor-concorrente:
+    networks:
+      rede_trabalho:
+        ipv4_address: 37.92.0.11
+
+"O cliente espera 15 segundos (para os servidores estarem prontos) e depois roda os testes"
+  cliente-teste:
+    command: bash -c "sleep 15 && python3 clienteTestes.py"
+    depends_on:
+      - servidor-sequencial
+      - servidor-concorrente
+
+
+"Aqui criei uma pasta compartilhada entre o container e minha máquina para salvar os resultados":
+    volumes:
+      - ./resultados:/app/resultados
+
+"O analisador só roda DEPOIS que os testes terminam":
+  analisador-metricas:
+    depends_on:
+      - cliente-teste
+
+"Criamos uma rede privada 37.92.0.0/16 baseada na minha matrícula, onde todos os containers conversam":
+networks:
+  rede_trabalho:
+    ipam:
+      config:
+        - subnet: 37.92.0.0/16
+
+
+
+📦 NOSSA INFRAESTRUTURA DOCKER:
+
+DOCKERFILE (Receita)              DOCKER COMPOSE (Orquestrador)
+├── Ubuntu base                   ├──  Servidor Sequencial (37.92.0.10)
+├── Python + Dependências         ├──  Servidor Concorrente (37.92.0.11)  
+├── Ambiente virtual              ├──  Cliente Testes (37.92.0.100)
+└── Bibliotecas gráficas          └──  Analisador (37.92.0.200)
+                                  └──  Rede 37.92.0.0/16
