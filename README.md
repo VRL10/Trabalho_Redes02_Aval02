@@ -59,3 +59,7 @@ Os resultados ficam salvos na sua máquina em: ./resultados/metricas_completas.j
   - 1.200 requisições totais
 - Salva resultados em resultados/
 - Servidores continuam rodando (comportamento esperado)
+
+Link do Vídeo do Youtube:
+Vídeo Principal: https://youtu.be/cjEnH0GhgP8
+Vídeo de Comprovação (Executando os testes passo a passo até chegar nos resultados): https://youtu.be/cjEnH0GhgP8
