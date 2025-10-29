@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instalar Python e dependências INCLUINDO CURL
+# Instalar Python e dependências INCLUINDO CURL.
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
