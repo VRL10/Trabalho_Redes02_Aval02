@@ -1,5 +1,11 @@
 # Projeto Redes II - Comparação Servidores Web
 
+## Link do Vídeo do Youtube:
+
+- Vídeo Principal: https://youtu.be/CVCzJLHHhr8
+
+- Vídeo de Comprovação (Executando os testes passo a passo até chegar nos resultados): https://youtu.be/cjEnH0GhgP8
+  
 ## Sobre o Projeto
 Comparação de desempenho entre servidores web Sequencial vs Concorrente implementados com sockets TCP brutos em Python.
 
@@ -60,6 +66,4 @@ Os resultados ficam salvos na sua máquina em: ./resultados/metricas_completas.j
 - Salva resultados em resultados/
 - Servidores continuam rodando (comportamento esperado)
 
-Link do Vídeo do Youtube:
-Vídeo Principal: https://youtu.be/cjEnH0GhgP8
-Vídeo de Comprovação (Executando os testes passo a passo até chegar nos resultados): https://youtu.be/cjEnH0GhgP8
+
