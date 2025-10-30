@@ -30,7 +30,7 @@ Pré-requisitos:
 
 Passo a passo de como executar o programa:
 
-1️. Limpar ambiente (opcional - se já executou antes) -> Dessa forma garantindo que o ambiente fique limpo.
+1. Limpar ambiente (opcional - se já executou antes) -> Dessa forma garantindo que o ambiente fique limpo.
 
 docker-compose down
 docker system prune -f
